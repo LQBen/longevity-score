@@ -27,15 +27,13 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
       return;
     }
 
-    // Animate: scroll through tiers from 0 to target, decelerating
-    const totalDistance = targetIndex * 100; // px units for the carousel
-    const duration = 1500; // ms
+    const totalDistance = targetIndex * 100;
+    const duration = 1500;
     const startTime = performance.now();
 
     function animate(now: number) {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease-out cubic for deceleration
       const eased = 1 - Math.pow(1 - progress, 3);
       setOffset(eased * totalDistance);
 
@@ -55,7 +53,6 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
   const effectiveIndex = settled ? targetIndex : Math.round(offset / 100);
 
   if (targetIndex < 0) {
-    // Fallback: just show the label
     return (
       <span className="inline-block text-lg sm:text-xl font-bold px-6 py-2 rounded-full bg-gray-100 text-gray-700 border-2 border-gray-300">
         {tierLabel}
@@ -64,62 +61,61 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
   }
 
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-4 min-h-[56px]">
-      {/* Left neighbor (faded) */}
-      {settled && targetIndex > 0 && (
-        <span
-          className={`hidden sm:inline-block text-sm font-bold px-4 py-1.5 rounded-full border-2 opacity-30 ${TIERS[targetIndex - 1].bg} ${TIERS[targetIndex - 1].text} ${TIERS[targetIndex - 1].border}`}
-        >
-          {TIERS[targetIndex - 1].label}
-        </span>
-      )}
-
-      {/* Carousel container */}
-      <div className="overflow-hidden" style={{ width: settled ? 'auto' : '260px' }}>
-        <div
-          className="flex transition-none whitespace-nowrap"
-          style={{
-            transform: settled ? 'none' : `translateX(-${offset}px)`,
-            gap: settled ? '0px' : '12px',
-          }}
-        >
-          {settled ? (
-            // Final settled badge
+    <div className="w-full max-w-xl mx-auto min-h-[56px]">
+      {settled ? (
+        /* Settled state: center badge + faded neighbors */
+        <div className="flex items-center justify-center gap-2 sm:gap-3">
+          {targetIndex > 0 && (
             <span
-              className={`inline-block text-lg sm:text-xl font-bold px-6 py-2 rounded-full border-2 scale-105 ${TIERS[targetIndex].bg} ${TIERS[targetIndex].text} ${TIERS[targetIndex].border}`}
-              style={{
-                boxShadow: `0 4px 20px ${TIERS[targetIndex].color}40`,
-              }}
+              className={`text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border opacity-30 whitespace-nowrap flex-shrink-0 ${TIERS[targetIndex - 1].bg} ${TIERS[targetIndex - 1].text} ${TIERS[targetIndex - 1].border}`}
             >
-              {tierLabel}
+              {TIERS[targetIndex - 1].label}
             </span>
-          ) : (
-            // Scrolling badges
-            TIERS.map((tier, i) => (
-              <span
-                key={tier.label}
-                className={`inline-block flex-shrink-0 text-base font-bold px-5 py-2 rounded-full border-2 ${tier.bg} ${tier.text} ${tier.border}`}
-                style={{
-                  width: '100px',
-                  textAlign: 'center',
-                  fontSize: '11px',
-                  opacity: Math.abs(effectiveIndex - i) <= 1 ? 1 : 0.4,
-                }}
-              >
-                {tier.label.replace('Longevity ', '')}
-              </span>
-            ))
+          )}
+
+          <span
+            className={`text-base sm:text-lg font-bold px-4 sm:px-6 py-2 rounded-full border-2 whitespace-nowrap flex-shrink-0 ${TIERS[targetIndex].bg} ${TIERS[targetIndex].text} ${TIERS[targetIndex].border}`}
+            style={{ boxShadow: `0 4px 20px ${TIERS[targetIndex].color}40` }}
+          >
+            {tierLabel}
+          </span>
+
+          {targetIndex < TIERS.length - 1 && (
+            <span
+              className={`text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border opacity-30 whitespace-nowrap flex-shrink-0 ${TIERS[targetIndex + 1].bg} ${TIERS[targetIndex + 1].text} ${TIERS[targetIndex + 1].border}`}
+            >
+              {TIERS[targetIndex + 1].label}
+            </span>
           )}
         </div>
-      </div>
-
-      {/* Right neighbor (faded) */}
-      {settled && targetIndex < TIERS.length - 1 && (
-        <span
-          className={`hidden sm:inline-block text-sm font-bold px-4 py-1.5 rounded-full border-2 opacity-30 ${TIERS[targetIndex + 1].bg} ${TIERS[targetIndex + 1].text} ${TIERS[targetIndex + 1].border}`}
-        >
-          {TIERS[targetIndex + 1].label}
-        </span>
+      ) : (
+        /* Animating carousel */
+        <div className="flex justify-center">
+          <div className="overflow-hidden" style={{ width: '260px' }}>
+            <div
+              className="flex transition-none whitespace-nowrap"
+              style={{
+                transform: `translateX(-${offset}px)`,
+                gap: '12px',
+              }}
+            >
+              {TIERS.map((tier, i) => (
+                <span
+                  key={tier.label}
+                  className={`inline-block flex-shrink-0 text-base font-bold px-5 py-2 rounded-full border-2 ${tier.bg} ${tier.text} ${tier.border}`}
+                  style={{
+                    width: '100px',
+                    textAlign: 'center',
+                    fontSize: '11px',
+                    opacity: Math.abs(effectiveIndex - i) <= 1 ? 1 : 0.4,
+                  }}
+                >
+                  {tier.label.replace('Longevity ', '')}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
