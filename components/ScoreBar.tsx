@@ -40,6 +40,31 @@ function interpolateColor(c1: string, c2: string, t: number): string {
   return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
+function buildBarGradient(score: number): string {
+  if (score <= 0) return '#E74C3C';
+  const stops: string[] = [];
+  // Always start with red
+  stops.push('#E74C3C 0%');
+
+  if (score <= 33) {
+    // Only red fills
+    stops.push('#E74C3C 100%');
+  } else if (score <= 50) {
+    // Red to amber
+    const amberPos = ((33 / score) * 100).toFixed(0);
+    stops.push(`#E74C3C ${amberPos}%`);
+    stops.push('#F59E0B 100%');
+  } else {
+    // Red, amber, teal
+    const amberPos = ((33 / score) * 100).toFixed(0);
+    const tealStart = ((50 / score) * 100).toFixed(0);
+    stops.push(`#E74C3C ${amberPos}%`);
+    stops.push(`#F59E0B ${tealStart}%`);
+    stops.push('#0BBAB4 100%');
+  }
+  return `linear-gradient(90deg, ${stops.join(', ')})`;
+}
+
 export default function ScoreBar({ score }: ScoreBarProps) {
   const barColor = getGradientColor(score);
 
@@ -58,7 +83,7 @@ export default function ScoreBar({ score }: ScoreBarProps) {
           className="h-full rounded-full animate-fill-bar"
           style={{
             width: `${score}%`,
-            background: `linear-gradient(90deg, ${getGradientColor(0)} 0%, ${getGradientColor(Math.min(score, 33))} ${Math.min((33 / score) * 100, 100)}%, ${score > 33 ? getGradientColor(Math.min(score, 50)) : ''} ${score > 33 ? Math.min((50 / score) * 100, 100) + '%' : ''}, ${barColor} 100%)`.replace(/,\s*,/g, ','),
+            background: buildBarGradient(score),
           }}
         />
       </div>
