@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { questions } from '@/lib/questions';
 import { trackEvent, Events } from '@/lib/analytics';
 import ProgressBar from '@/components/ProgressBar';
@@ -16,6 +16,7 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<Record<string, string | number>>({});
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
 
   useEffect(() => {
     trackEvent(Events.QUIZ_STARTED);
@@ -31,6 +32,16 @@ export default function QuizPage() {
     }
   }, [currentQuestion, answers]);
 
+  const advanceQuestion = useCallback(() => {
+    if (currentQuestion < totalQuestions - 1) {
+      setCurrentQuestion(prev => prev + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      setScreen('email');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentQuestion, totalQuestions]);
+
   const handleAnswer = (answer: string | number) => {
     const q = questions[currentQuestion];
     setAnswers(prev => ({ ...prev, [q.id]: answer }));
@@ -40,17 +51,19 @@ export default function QuizPage() {
       question_category: q.category,
       answer_text: typeof answer === 'number' ? String(answer) : q.options.find(o => o.id === answer)?.text || answer,
     });
+
+    // Auto-advance for non-slider questions with smooth transition
+    if (q.type !== 'slider') {
+      setTransitioning(true);
+      setTimeout(() => {
+        advanceQuestion();
+        setTimeout(() => setTransitioning(false), 50);
+      }, 150);
+    }
   };
 
   const handleNext = () => {
-    if (currentQuestion < totalQuestions - 1) {
-      setCurrentQuestion(prev => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      // Last question done — go to email capture
-      setScreen('email');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    advanceQuestion();
   };
 
   const handlePrevious = () => {
@@ -96,10 +109,10 @@ export default function QuizPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Progress calculation
+  // Progress calculation: use currentQuestion + 1 so Q1 shows ~5%
   const progressCurrent = screen === 'email' || screen === 'results'
     ? totalQuestions
-    : currentQuestion;
+    : currentQuestion + 1;
 
   return (
     <div className="min-h-screen flex flex-col bg-card-bg">
@@ -126,16 +139,20 @@ export default function QuizPage() {
       {/* Content */}
       <main className="flex-1 px-4 py-6">
         {screen === 'quiz' && (
-          <QuizQuestion
-            question={questions[currentQuestion]}
-            questionNumber={currentQuestion + 1}
-            totalQuestions={totalQuestions}
-            selectedAnswer={answers[questions[currentQuestion].id]}
-            onAnswer={handleAnswer}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            isFirst={currentQuestion === 0}
-          />
+          <div
+            className={`transition-opacity duration-150 ${transitioning ? 'opacity-0' : 'opacity-100'}`}
+          >
+            <QuizQuestion
+              question={questions[currentQuestion]}
+              questionNumber={currentQuestion + 1}
+              totalQuestions={totalQuestions}
+              selectedAnswer={answers[questions[currentQuestion].id]}
+              onAnswer={handleAnswer}
+              onNext={handleNext}
+              onPrevious={handlePrevious}
+              isFirst={currentQuestion === 0}
+            />
+          </div>
         )}
 
         {screen === 'email' && !loading && (

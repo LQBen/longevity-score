@@ -30,7 +30,6 @@ function isSoftOption(text: string): boolean {
 
 export default function QuizQuestion({
   question,
-  questionNumber,
   selectedAnswer,
   onAnswer,
   onNext,
@@ -39,10 +38,6 @@ export default function QuizQuestion({
 }: QuizQuestionProps) {
   const handleOptionClick = (optionId: string) => {
     onAnswer(optionId);
-    // Auto-advance after brief delay
-    setTimeout(() => {
-      onNext();
-    }, 300);
   };
 
   const isShortOptions = question.options.length <= 3 &&
@@ -53,10 +48,10 @@ export default function QuizQuestion({
       <div className="bg-white rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.08)] p-7 sm:p-10">
         {/* Question text */}
         <div className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-semibold text-primary leading-snug">
-            {questionNumber}. {question.text}
-            {question.infobox && <Tooltip text={question.infobox} />}
+          <h2 className="text-xl sm:text-2xl font-semibold text-primary leading-snug inline">
+            {question.text}
           </h2>
+          {question.infobox && <Tooltip text={question.infobox} />}
         </div>
 
         {/* Answer options */}
@@ -86,7 +81,7 @@ export default function QuizQuestion({
                       ? 'border-primary bg-primary/10 text-primary font-medium shadow-sm'
                       : soft
                         ? 'border-gray-200 hover:border-primary/30 hover:bg-gray-50 text-gray-400'
-                        : 'border-gray-200 hover:border-primary/50 hover:bg-gray-50 text-foreground'
+                        : 'border-gray-200 hover:border-primary/50 hover:bg-gray-50 text-gray-700'
                     }`}
                 >
                   {option.text}

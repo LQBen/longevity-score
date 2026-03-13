@@ -35,11 +35,11 @@ export default function Tooltip({ text }: TooltipProps) {
   }, [open]);
 
   return (
-    <span className="relative inline-block ml-2 align-middle">
+    <span className="relative inline-flex items-center ml-2 align-middle">
       <button
         ref={buttonRef}
         type="button"
-        className="inline-flex items-center justify-center w-7 h-7 text-sm font-bold text-primary border-2 border-primary/40 rounded-full hover:bg-primary hover:text-white hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+        className="inline-flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-primary rounded-full hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
         onClick={() => setOpen(!open)}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}

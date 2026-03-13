@@ -11,7 +11,7 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
   return (
     <div className="w-full max-w-2xl mx-auto mb-6">
       <div className="flex justify-end mb-1">
-        <span className="text-xs font-medium text-gray-400">{percentage}%</span>
+        <span className="text-sm font-medium text-gray-400">{percentage}%</span>
       </div>
       <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
         <div

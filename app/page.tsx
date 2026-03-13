@@ -6,14 +6,16 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-card-bg">
       {/* Logo */}
       <div className="pt-6 pb-4 flex justify-center">
-        <Image
-          src="/longeviquest-logo-1600.png"
-          alt="LongeviQuest"
-          width={200}
-          height={48}
-          className="h-10 sm:h-12 w-auto"
-          priority
-        />
+        <a href="https://longeviquest.com" target="_blank" rel="noopener noreferrer">
+          <Image
+            src="/longeviquest-logo-1600.png"
+            alt="LongeviQuest"
+            width={200}
+            height={48}
+            className="h-10 sm:h-12 w-auto"
+            priority
+          />
+        </a>
       </div>
 
       {/* Main content */}
@@ -79,7 +81,7 @@ export default function Home() {
           </svg>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground text-center mb-3">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground text-center mb-3">
           What&apos;s Your Longevity Score?
         </h1>
         <p className="text-lg text-gray-600 text-center max-w-md mb-8">
@@ -96,7 +98,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="px-4 py-4 flex flex-col items-center gap-2 text-sm text-gray-400 max-w-4xl mx-auto w-full">
-        <span className="text-center italic text-xs">
+        <span className="text-center text-[13px] text-gray-500">
           Longevity Score is an informational tool and not a substitute for professional medical advice.
         </span>
         <span className="self-end">&copy; LongeviQuest 2026</span>

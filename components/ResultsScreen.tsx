@@ -5,13 +5,9 @@ import ScoreBar from './ScoreBar';
 import FactorCard from './FactorCard';
 import { trackEvent, Events } from '@/lib/analytics';
 
-type SeverityLevel = 'major_booster' | 'minor_booster' | 'neutral' | 'minor_hazard' | 'major_hazard';
-
 interface Factor {
   category: string;
   classification: 'booster' | 'neutral' | 'hazard';
-  severity: SeverityLevel;
-  severityLabel: string;
   message: string;
   cta: { text: string; url: string };
   points: number;
@@ -36,6 +32,15 @@ interface ResultsScreenProps {
   result: ScoreResult;
   onTryAgain: () => void;
 }
+
+const tierBadgeStyles: Record<string, string> = {
+  'Longevity Champion': 'bg-amber-400 text-amber-900 border-2 border-amber-500',
+  'Longevity Optimized': 'bg-primary/15 text-primary border-2 border-primary',
+  'Longevity Inclined': 'bg-emerald-100 text-emerald-700 border-2 border-emerald-400',
+  'Longevity Enabled': 'bg-amber-100 text-amber-700 border-2 border-amber-400',
+  'Longevity Challenged': 'bg-orange-100 text-orange-700 border-2 border-orange-400',
+  'Longevity Warning': 'bg-red-100 text-red-700 border-2 border-red-400',
+};
 
 export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps) {
   useEffect(() => {
@@ -68,14 +73,16 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
     }
   };
 
-  // Factors are pre-sorted by severity then maxPoints from the server
-  // For desktop: split into boosters (left) and hazards (right)
+  // Factors are pre-sorted by classification then maxPoints from the server
+  // Desktop: boosters + neutrals on left, hazards on right
   const boosterFactors = result.factors.filter(
-    f => f.severity === 'major_booster' || f.severity === 'minor_booster' || f.severity === 'neutral'
+    f => f.classification === 'booster' || f.classification === 'neutral'
   );
   const hazardFactors = result.factors.filter(
-    f => f.severity === 'minor_hazard' || f.severity === 'major_hazard'
+    f => f.classification === 'hazard'
   );
+
+  const badgeStyle = tierBadgeStyles[result.tier.label] || 'bg-gray-100 text-gray-700 border-2 border-gray-300';
 
   return (
     <div className="w-full">
@@ -100,10 +107,10 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
           <ScoreBar score={result.score} />
 
           <div className="mt-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-primary mb-3">
+            <span className={`inline-block text-lg sm:text-xl font-bold px-6 py-2 rounded-full ${badgeStyle} mb-4`}>
               {result.tier.label}
-            </h2>
-            <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto">
+            </span>
+            <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto text-left">
               {result.tier.message}
             </p>
           </div>
@@ -167,7 +174,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
           </div>
         </div>
 
-        {/* Mobile: single column, sorted by severity */}
+        {/* Mobile: single column, sorted by classification */}
         <div className="md:hidden space-y-4">
           {result.factors.map((factor, i) => (
             <FactorCard
@@ -209,7 +216,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
 
         {/* Footer */}
         <footer className="mt-8 px-4 py-4 flex flex-col items-center gap-2 text-sm text-gray-400">
-          <span className="text-center italic text-xs">
+          <span className="text-center text-[13px] text-gray-500">
             Longevity Score is an informational tool and not a substitute for professional medical advice.
           </span>
           <span className="self-end">&copy; LongeviQuest 2026</span>
