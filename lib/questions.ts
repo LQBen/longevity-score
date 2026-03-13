@@ -16,7 +16,7 @@ export interface Question {
 }
 
 export const questions: Question[] = [
-  // 1. Who are you answering for? (Q21 - Unscored)
+  // 1. Who are you answering for? (Unscored)
   {
     id: 'who_answering_for',
     category: 'Context',
@@ -32,7 +32,7 @@ export const questions: Question[] = [
       { id: 'other', text: 'Other' },
     ],
   },
-  // 2. How old are you now? (Q20 - Age slider)
+  // 2. How old are you now? (Age slider)
   {
     id: 'age',
     category: 'Age',
@@ -43,7 +43,7 @@ export const questions: Question[] = [
     sliderMax: 122,
     options: [],
   },
-  // 3. What is your biological sex? (Q18 - Bonus)
+  // 3. What is your biological sex? (Bonus)
   {
     id: 'biological_sex',
     category: 'Female Advantage',
@@ -56,7 +56,7 @@ export const questions: Question[] = [
       { id: 'prefer_not_to_say', text: 'Prefer not to say' },
     ],
   },
-  // 4. Have any of your relatives reached the age of 90 or above? (Q19 - Bonus)
+  // 4. Have any of your relatives reached the age of 90 or above? (Bonus)
   {
     id: 'family_longevity',
     category: 'Family Advantage',
@@ -69,12 +69,11 @@ export const questions: Question[] = [
       { id: 'not_sure', text: 'Not sure' },
     ],
   },
-  // 5. Do you smoke? (Q1 - Tier 1)
+  // 5. Do you smoke? (Tier 1) — tooltip REMOVED
   {
     id: 'smoking',
     category: 'Smoking',
     text: 'Do you smoke?',
-    infobox: 'Smoking is the lifestyle factor most strongly associated with reduced longevity. The vast majority of supercentenarians never smoked.',
     type: 'select',
     options: [
       { id: 'never', text: 'Never' },
@@ -84,12 +83,11 @@ export const questions: Question[] = [
       { id: 'frequently', text: 'Frequently' },
     ],
   },
-  // 6. How physically active are you? (Q2 - Tier 1)
+  // 6. How physically active are you? (Tier 1) — tooltip REMOVED
   {
     id: 'physical_activity',
     category: 'Physical Activity',
     text: 'How physically active are you?',
-    infobox: 'Few supercentenarians had strict exercise regimens, but almost all stayed physically active in daily life.',
     type: 'select',
     options: [
       { id: 'very_active', text: 'I exercise frequently and stay physically active throughout the day' },
@@ -98,12 +96,12 @@ export const questions: Question[] = [
       { id: 'sedentary', text: 'Mostly sedentary (minimal physical movement throughout the day)' },
     ],
   },
-  // 7. What's your typical stress level? (Q3 - Tier 1)
+  // 7. What's your typical stress level? (Tier 1) — tooltip UPDATED
   {
     id: 'stress',
     category: 'Stress',
     text: "What's your typical stress level?",
-    infobox: 'Almost all supercentenarians reported low stress levels. A calm temperament is one of the most consistent traits among the world\'s longest-lived people.',
+    infobox: "We know this is tough to precisely judge. Give it your best shot.",
     type: 'select',
     options: [
       { id: 'low', text: 'Low' },
@@ -112,12 +110,11 @@ export const questions: Question[] = [
       { id: 'high', text: 'High' },
     ],
   },
-  // 8. How do you feel about the future? (Q4 - Tier 1)
+  // 8. How do you feel about the future? (Tier 1) — tooltip REMOVED
   {
     id: 'future_outlook',
     category: 'Future Outlook',
     text: 'How do you feel about the future?',
-    infobox: 'Even past 100, most supercentenarians feel optimistic. Their outlook often comes from focusing on their own lives rather than world events.',
     type: 'select',
     options: [
       { id: 'optimistic', text: 'Optimistic / excited' },
@@ -127,12 +124,11 @@ export const questions: Question[] = [
       { id: 'pessimistic', text: 'Pessimistic / dreading' },
     ],
   },
-  // 9. Which best describes your view on aging? (Q5 - Tier 1)
+  // 9. Which best describes your view on aging? (Tier 1) — tooltip REMOVED
   {
     id: 'aging_attitude',
     category: 'Attitude on Aging',
     text: 'Which best describes your view on aging?',
-    infobox: 'Not many people who fear getting old make it to 110. A positive or neutral attitude toward aging is a consistent trait among supercentenarians.',
     type: 'select',
     options: [
       { id: 'positive', text: 'Older and wiser by the day – bring it on!' },
@@ -142,11 +138,12 @@ export const questions: Question[] = [
       { id: 'fear_dread', text: 'Aging often gives me fear or dread.' },
     ],
   },
-  // 10. How socially connected are you? (Q6 - Tier 2)
+  // 10. How socially connected do you feel? (Tier 2) — text REWRITTEN, tooltip UPDATED
   {
     id: 'social_connection',
     category: 'Social Connection',
-    text: 'How socially connected are you? Think about how often you interact with others or feel connected socially. It\'s about your own satisfaction.',
+    text: 'How socially connected do you feel?',
+    infobox: "Think about how often you interact with others or feel connected socially. It's not about societal expectations – it's about your own satisfaction with this aspect of your life.",
     type: 'select',
     options: [
       { id: 'active_fulfilled', text: 'I have an active social life that fulfills me.' },
@@ -155,11 +152,12 @@ export const questions: Question[] = [
       { id: 'lonely', text: 'I often feel lonely or isolated from others.' },
     ],
   },
-  // 11. Choose the most accurate description of your diet. (Q7 - Tier 2)
+  // 11. Choose the most accurate description of your diet. (Tier 2) — text REWRITTEN, tooltip UPDATED
   {
     id: 'diet',
     category: 'Diet',
-    text: 'Choose the most accurate description of your diet. Think about what\'s on your plate most often during meals.',
+    text: 'Choose the most accurate description of your diet.',
+    infobox: "Think about what's on your plate most often during meals. We'll ask about snacks next.",
     type: 'select',
     options: [
       { id: 'balanced_healthy', text: 'Balanced, health-conscious' },
@@ -170,12 +168,11 @@ export const questions: Question[] = [
       { id: 'other', text: 'Other/unlisted' },
     ],
   },
-  // 12. How often do you treat yourself to junk food, candy, or soda? (Q8 - Tier 2)
+  // 12. How often do you treat yourself to junk food, candy, or soda? (Tier 2) — tooltip REMOVED
   {
     id: 'junk_food',
     category: 'Junk Food',
     text: 'How often do you treat yourself to junk food, candy, or soda?',
-    infobox: 'Many supercentenarians enjoyed a favorite treat. Moderation matters more than total abstinence.',
     type: 'select',
     options: [
       { id: 'never', text: 'Never' },
@@ -184,21 +181,21 @@ export const questions: Question[] = [
       { id: 'daily', text: 'Daily' },
     ],
   },
-  // 13. Would you consider yourself religious / spiritual? (Q9 - Tier 2)
+  // 13. Would you consider yourself religious / spiritual? (Tier 2) — tooltip UPDATED, answers REWRITTEN
   {
     id: 'religion',
     category: 'Religion / Spirituality',
     text: 'Would you consider yourself religious / spiritual?',
-    infobox: 'Nearly all supercentenarians report having religious or spiritual beliefs, regardless of location. Research also links longevity to feeling that life has purpose.',
+    infobox: "We ask this because most supercentenarians – across cultures – cite it as a factor in their longevity.",
     type: 'select',
     options: [
-      { id: 'regularly_observant', text: 'Yes, regularly observant' },
-      { id: 'not_regularly', text: 'Yes, but not regularly observant' },
+      { id: 'regularly_observant', text: 'Yes, observant' },
+      { id: 'not_regularly', text: 'Yes, but not observant' },
       { id: 'prefer_not_say', text: 'Prefer not to say' },
       { id: 'not_particularly', text: 'Not particularly' },
     ],
   },
-  // 14. Do you work? (Q10 - Tier 2)
+  // 14. Do you work? (Tier 2)
   {
     id: 'work',
     category: 'Work History',
@@ -215,7 +212,7 @@ export const questions: Question[] = [
       { id: 'financially_independent', text: "Financially independent / don't need to work" },
     ],
   },
-  // 15. Have you ever been married? (Q11 - Tier 3)
+  // 15. Have you ever been married? (Tier 3)
   {
     id: 'marriage',
     category: 'Marriage',
@@ -226,7 +223,7 @@ export const questions: Question[] = [
       { id: 'no', text: 'No' },
     ],
   },
-  // 16. Do you have children? (Q12 - Tier 3)
+  // 16. Do you have children? (Tier 3)
   {
     id: 'children',
     category: 'Children',
@@ -239,7 +236,7 @@ export const questions: Question[] = [
       { id: 'no', text: 'No / not yet' },
     ],
   },
-  // 17. How many hours of sleep do you usually get? (Q13 - Tier 3)
+  // 17. How many hours of sleep do you usually get? (Tier 3)
   {
     id: 'sleep_hours',
     category: 'Sleep Hours',
@@ -251,7 +248,7 @@ export const questions: Question[] = [
       { id: 'under_6', text: 'Under 6 hours' },
     ],
   },
-  // 18. How would you describe your sleep pattern? (Q14 - Tier 3)
+  // 18. How would you describe your sleep pattern? (Tier 3)
   {
     id: 'sleep_pattern',
     category: 'Sleep Pattern',
@@ -264,7 +261,7 @@ export const questions: Question[] = [
       { id: 'other', text: 'Other' },
     ],
   },
-  // 19. Do you drink alcohol? (Q15 - Tier 3)
+  // 19. Do you drink alcohol? (Tier 3)
   {
     id: 'alcohol',
     category: 'Alcohol',
@@ -278,7 +275,7 @@ export const questions: Question[] = [
       { id: 'frequently', text: 'Frequently' },
     ],
   },
-  // 20. Which of these options best describes the area where you live? (Q16 - Tier 4)
+  // 20. Which of these options best describes the area where you live? (Tier 4)
   {
     id: 'living_environment',
     category: 'Living Environment',
@@ -290,24 +287,24 @@ export const questions: Question[] = [
       { id: 'urban', text: 'Urban / City' },
     ],
   },
-  // 21. Choose the most accurate description of your current physique. (Q17 - Tier 4)
+  // 21. Choose the most accurate description of your current physique. (Tier 4) — REORDERED, last option changed
   {
     id: 'physique',
     category: 'Physique',
     text: 'Choose the most accurate description of your current physique.',
     type: 'select',
     options: [
+      { id: 'underweight', text: 'Underweight' },
       { id: 'thin', text: 'Thin' },
       { id: 'average', text: 'Average' },
       { id: 'muscular', text: 'Muscular' },
       { id: 'stocky', text: 'Stocky' },
-      { id: 'underweight', text: 'Underweight' },
       { id: 'overweight', text: 'Overweight' },
       { id: 'obese', text: 'Obese' },
-      { id: 'prefer_not_say', text: 'Prefer not to say' },
+      { id: 'prefer_not_say', text: 'Other / prefer not to say' },
     ],
   },
-  // 22. How long do you want to live? (Q22 - Unscored)
+  // 22. How long do you want to live? (Unscored)
   {
     id: 'want_to_live',
     category: 'Post-Results',
@@ -321,19 +318,5 @@ export const questions: Question[] = [
       { id: 'no_aspiration', text: "I don't have any particular longevity aspiration." },
     ],
   },
-  // 23. What do you expect your Longevity Score will be? (Q23 - Unscored)
-  {
-    id: 'expected_score',
-    category: 'Post-Results',
-    text: 'What do you expect your Longevity Score will be?',
-    type: 'select',
-    options: [
-      { id: 'champion', text: '91%+ – Longevity Champion' },
-      { id: 'optimized', text: '80-90% – Longevity Optimized' },
-      { id: 'inclined', text: '70-79% – Longevity Inclined' },
-      { id: 'enabled', text: '50-69% – Longevity Enabled' },
-      { id: 'challenged', text: '25-49% – Longevity Challenged' },
-      { id: 'warning', text: '0-24% – Longevity Warning' },
-    ],
-  },
+  // Q23 REMOVED — "What do you expect your Longevity Score will be?"
 ];

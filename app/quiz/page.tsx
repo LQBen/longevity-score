@@ -27,7 +27,7 @@ export default function QuizPage() {
   useEffect(() => {
     const q = questions[currentQuestion];
     if (q && q.type === 'slider' && answers[q.id] === undefined) {
-      setAnswers(prev => ({ ...prev, [q.id]: 35 }));
+      setAnswers(prev => ({ ...prev, [q.id]: 61 }));
     }
   }, [currentQuestion, answers]);
 
