@@ -144,7 +144,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + i * 200}
                 />
               )) : (
-                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</p>
+                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</div>
               )}
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + (boosterFactors.length + i) * 200}
                 />
               )) : (
-                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Hazard. Keep it up!</p>
+                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Hazard. Keep it up!</div>
               )}
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + i * 150}
                 />
               )) : (
-                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</p>
+                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</div>
               )}
             </div>
           </div>
@@ -201,7 +201,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + (boosterFactors.length + i) * 150}
                 />
               )) : (
-                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Hazard. Keep it up!</p>
+                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Hazard. Keep it up!</div>
               )}
             </div>
           </div>
