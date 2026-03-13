@@ -364,7 +364,7 @@ export const bonusConfigs: BonusConfig[] = [
     category: 'Female Longevity Advantage',
     triggerValue: 'female',
     points: 2,
-    bonusMessage: "Being female is widely recognized as a biological longevity advantage. About 90% of supercentenarians are female. This isn't a lifestyle factor — it's a biological one. Your Longevity Score includes a +2 bonus displayed separately from your lifestyle score.",
+    bonusMessage: "Being female is widely recognized as a biological longevity advantage. About 90% of supercentenarians are female. This isn't a lifestyle factor — it's a biological one. Your Longevity Score includes a bonus factored into your score.",
     nonBonusMessage: "Being female is widely recognized as a biological longevity advantage — about 90% of supercentenarians are female. This isn't a lifestyle factor, so you weren't penalized. Your Longevity Score measures what you can control.",
   },
   {
@@ -372,7 +372,7 @@ export const bonusConfigs: BonusConfig[] = [
     category: 'Family Longevity Advantage',
     triggerValue: 'yes',
     points: 2,
-    bonusMessage: "Having direct relatives who reached the age of 90 provides an inherited longevity advantage. Your family history earns you a +2 bonus displayed separately from your lifestyle score. The science is clear — longevity runs in families.",
+    bonusMessage: "Having direct relatives who reached the age of 90 provides an inherited longevity advantage. Your family history earns you a bonus factored into your score. The science is clear — longevity runs in families.",
     nonBonusMessage: "Having direct relatives who reached 90 provides an inherited longevity advantage. Since Longevity Score is a lifestyle assessment, you weren't penalized for not having this. Your score measures what you can control.",
   },
 ];

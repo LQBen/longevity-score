@@ -189,7 +189,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   {bonus.category}
                 </h3>
                 <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-violet-100 text-violet-700 mb-3">
-                  Biological Bonus +{bonus.points}
+                  Biological Bonus
                 </span>
                 <p className="text-base text-gray-700 leading-relaxed">
                   {bonus.message}
