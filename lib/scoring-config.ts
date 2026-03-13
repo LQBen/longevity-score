@@ -385,6 +385,41 @@ export function getAgeFactorMessage(age: number): string {
   return `At ${age}, your longevity journey is still unfolding. Keep making choices that help you stay strong, active, and optimistic.`;
 }
 
+// Severity labels based on percentage of max points
+export type SeverityLevel = 'major_booster' | 'minor_booster' | 'neutral' | 'minor_hazard' | 'major_hazard';
+
+export function getSeverityLevel(points: number, maxPoints: number): SeverityLevel {
+  if (maxPoints === 0) return 'neutral';
+  const pct = (points / maxPoints) * 100;
+  if (pct >= 80) return 'major_booster';
+  if (pct >= 60) return 'minor_booster';
+  if (pct >= 40) return 'neutral';
+  if (pct >= 20) return 'minor_hazard';
+  return 'major_hazard';
+}
+
+export function getSeverityLabel(severity: SeverityLevel): string {
+  switch (severity) {
+    case 'major_booster': return 'Major Longevity Booster';
+    case 'minor_booster': return 'Minor Longevity Booster';
+    case 'neutral': return 'Neutral';
+    case 'minor_hazard': return 'Minor Longevity Hazard';
+    case 'major_hazard': return 'Major Longevity Hazard';
+  }
+}
+
+// Calculate max points for a factor's question IDs
+function getMaxPoints(questionIds: string[]): number {
+  let max = 0;
+  for (const qId of questionIds) {
+    const values = pointValues[qId];
+    if (values) {
+      max += Math.max(...Object.values(values));
+    }
+  }
+  return max;
+}
+
 // Calculate score from answers
 export function calculateScore(answers: Record<string, string | number>) {
   // Calculate lifestyle score
@@ -396,24 +431,33 @@ export function calculateScore(answers: Record<string, string | number>) {
     }
   }
 
-  // Determine tier
-  const tier = tiers.find(t => lifestyleScore >= t.min && lifestyleScore <= t.max) || tiers[tiers.length - 1];
-
-  // Calculate bonuses
+  // Calculate bonuses and add to score
+  let bonusTotal = 0;
   const bonuses: Array<{ category: string; points: number; message: string }> = [];
   for (const bc of bonusConfigs) {
     const answer = answers[bc.questionId];
     if (answer === bc.triggerValue) {
       bonuses.push({ category: bc.category, points: bc.points, message: bc.bonusMessage });
+      bonusTotal += bc.points;
     }
   }
 
-  // Calculate factor breakdowns
+  // Final score = lifestyle + bonuses, capped at 100
+  const finalScore = Math.min(lifestyleScore + bonusTotal, 100);
+
+  // Determine tier based on final score (with bonuses)
+  const tier = tiers.find(t => finalScore >= t.min && finalScore <= t.max) || tiers[tiers.length - 1];
+
+  // Calculate factor breakdowns with severity
   const factors: Array<{
     category: string;
     classification: 'booster' | 'neutral' | 'hazard';
+    severity: SeverityLevel;
+    severityLabel: string;
     message: string;
     cta: { text: string; url: string };
+    points: number;
+    maxPoints: number;
   }> = [];
 
   for (const fc of factorConfigs) {
@@ -426,24 +470,45 @@ export function calculateScore(answers: Record<string, string | number>) {
       }
     }
 
+    const maxPoints = getMaxPoints(fc.questionIds);
+    const severity = getSeverityLevel(factorPoints, maxPoints);
+
     // Find matching condition
     const condition = fc.conditions.find(c => factorPoints >= c.min && factorPoints <= c.max);
     if (condition) {
       factors.push({
         category: fc.category,
         classification: condition.classification,
+        severity,
+        severityLabel: getSeverityLabel(severity),
         message: condition.message,
         cta: fc.cta,
+        points: factorPoints,
+        maxPoints,
       });
     }
   }
+
+  // Sort factors by severity then by maxPoints (highest weight first)
+  const severityOrder: Record<SeverityLevel, number> = {
+    major_booster: 0,
+    minor_booster: 1,
+    neutral: 2,
+    minor_hazard: 3,
+    major_hazard: 4,
+  };
+  factors.sort((a, b) => {
+    const sevDiff = severityOrder[a.severity] - severityOrder[b.severity];
+    if (sevDiff !== 0) return sevDiff;
+    return b.maxPoints - a.maxPoints; // Higher weight first within same severity
+  });
 
   // Age factor
   const age = typeof answers.age === 'number' ? answers.age : parseInt(answers.age as string) || 30;
   const ageMessage = getAgeFactorMessage(age);
 
   return {
-    score: lifestyleScore,
+    score: finalScore,
     tier: { label: tier.label, message: tier.message },
     bonuses,
     factors,

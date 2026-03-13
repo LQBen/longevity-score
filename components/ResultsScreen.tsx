@@ -5,11 +5,17 @@ import ScoreBar from './ScoreBar';
 import FactorCard from './FactorCard';
 import { trackEvent, Events } from '@/lib/analytics';
 
+type SeverityLevel = 'major_booster' | 'minor_booster' | 'neutral' | 'minor_hazard' | 'major_hazard';
+
 interface Factor {
   category: string;
   classification: 'booster' | 'neutral' | 'hazard';
+  severity: SeverityLevel;
+  severityLabel: string;
   message: string;
   cta: { text: string; url: string };
+  points: number;
+  maxPoints: number;
 }
 
 interface Bonus {
@@ -62,11 +68,28 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
     }
   };
 
-  const boosters = result.factors.filter(f => f.classification === 'booster' || f.classification === 'neutral');
-  const hazards = result.factors.filter(f => f.classification === 'hazard');
+  // Factors are pre-sorted by severity then maxPoints from the server
+  // For desktop: split into boosters (left) and hazards (right)
+  const boosterFactors = result.factors.filter(
+    f => f.severity === 'major_booster' || f.severity === 'minor_booster' || f.severity === 'neutral'
+  );
+  const hazardFactors = result.factors.filter(
+    f => f.severity === 'minor_hazard' || f.severity === 'major_hazard'
+  );
 
   return (
     <div className="w-full">
+      {/* Logo */}
+      <div className="pt-4 pb-3 flex justify-center">
+        <a href="/">
+          <img
+            src="/longeviquest-logo-1600.png"
+            alt="LongeviQuest"
+            className="h-8 sm:h-10"
+          />
+        </a>
+      </div>
+
       {/* Score reveal section */}
       <div className="bg-gradient-to-b from-primary/10 to-white pt-8 pb-12 px-4">
         <div className="max-w-3xl mx-auto text-center">
@@ -84,20 +107,6 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
               {result.tier.message}
             </p>
           </div>
-
-          {/* Bonus badges */}
-          {result.bonuses.length > 0 && (
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              {result.bonuses.map((bonus) => (
-                <div
-                  key={bonus.category}
-                  className="inline-flex items-center bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full"
-                >
-                  +{bonus.points} biological advantage ({bonus.category.toLowerCase().replace(' longevity advantage', '')})
-                </div>
-              ))}
-            </div>
-          )}
 
           {/* Action buttons */}
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
@@ -121,15 +130,16 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
 
       {/* Factor breakdown */}
       <div className="max-w-5xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Desktop: two columns */}
+        <div className="hidden md:grid grid-cols-2 gap-8">
           {/* Boosters column */}
           <div>
-            <h3 className="text-lg font-bold text-accent-green mb-4 flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-accent-green inline-block" />
+            <h3 className="text-lg font-bold text-emerald-500 mb-4 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" />
               Longevity Boosters
             </h3>
             <div className="space-y-4">
-              {boosters.map((factor, i) => (
+              {boosterFactors.map((factor, i) => (
                 <FactorCard
                   key={factor.category}
                   {...factor}
@@ -141,41 +151,32 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
 
           {/* Hazards column */}
           <div>
-            <h3 className="text-lg font-bold text-accent-red mb-4 flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-accent-red inline-block" />
+            <h3 className="text-lg font-bold text-red-500 mb-4 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
               Longevity Hazards
             </h3>
             <div className="space-y-4">
-              {hazards.map((factor, i) => (
+              {hazardFactors.map((factor, i) => (
                 <FactorCard
                   key={factor.category}
                   {...factor}
-                  delay={200 + (boosters.length + i) * 200}
+                  delay={200 + (boosterFactors.length + i) * 200}
                 />
               ))}
             </div>
           </div>
         </div>
 
-        {/* Bonus detail cards */}
-        {result.bonuses.length > 0 && (
-          <div className="mt-10">
-            <h3 className="text-lg font-bold text-primary mb-4">Biological Advantages</h3>
-            <div className="space-y-4">
-              {result.bonuses.map((bonus) => (
-                <div key={bonus.category} className="bg-white rounded-xl shadow-md p-5 border-l-4 border-l-primary">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">
-                    {bonus.category}
-                  </h4>
-                  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-primary text-white mb-3">
-                    +{bonus.points} Bonus
-                  </span>
-                  <p className="text-base text-gray-700 leading-relaxed">{bonus.message}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Mobile: single column, sorted by severity */}
+        <div className="md:hidden space-y-4">
+          {result.factors.map((factor, i) => (
+            <FactorCard
+              key={factor.category}
+              {...factor}
+              delay={200 + i * 150}
+            />
+          ))}
+        </div>
 
         {/* Age factor callout */}
         <div className="mt-10 bg-card-bg rounded-xl p-6 border border-gray-200">
