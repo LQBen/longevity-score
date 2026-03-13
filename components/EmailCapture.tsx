@@ -47,7 +47,7 @@ export default function EmailCapture({ onSubmit, onSkip }: EmailCaptureProps) {
     <div className="w-full max-w-2xl mx-auto">
       <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
         <h2 className="text-xl sm:text-2xl font-semibold text-primary text-center mb-2">
-          Get updates when Longevity Score evolves with the latest verified research.
+          Get updated when Longevity Score evolves with the latest verified research.
         </h2>
         <p className="text-center text-gray-500 mb-8">
           (Or skip to go straight to your results.)
@@ -105,9 +105,9 @@ export default function EmailCapture({ onSubmit, onSkip }: EmailCaptureProps) {
         <button
           type="button"
           onClick={handleSkip}
-          className="block mx-auto mt-4 text-primary underline text-base hover:text-primary-dark"
+          className="block mx-auto mt-4 px-6 py-2.5 border-2 border-primary text-primary font-medium text-base rounded-xl hover:bg-primary/10 transition-colors"
         >
-          SKIP
+          SKIP TO RESULTS
         </button>
       </div>
     </div>
