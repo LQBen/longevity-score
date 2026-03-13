@@ -137,13 +137,15 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
               Longevity Boosters
             </h3>
             <div className="space-y-4">
-              {boosterFactors.map((factor, i) => (
+              {boosterFactors.length > 0 ? boosterFactors.map((factor, i) => (
                 <FactorCard
                   key={factor.category}
                   {...factor}
                   delay={200 + i * 200}
                 />
-              ))}
+              )) : (
+                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</p>
+              )}
             </div>
           </div>
 
@@ -154,26 +156,55 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
               Longevity Hazards
             </h3>
             <div className="space-y-4">
-              {hazardFactors.map((factor, i) => (
+              {hazardFactors.length > 0 ? hazardFactors.map((factor, i) => (
                 <FactorCard
                   key={factor.category}
                   {...factor}
                   delay={200 + (boosterFactors.length + i) * 200}
                 />
-              ))}
+              )) : (
+                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Hazard. Keep it up!</p>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Mobile: single column, sorted by classification */}
-        <div className="md:hidden space-y-4">
-          {result.factors.map((factor, i) => (
-            <FactorCard
-              key={factor.category}
-              {...factor}
-              delay={200 + i * 150}
-            />
-          ))}
+        {/* Mobile: single column with headers */}
+        <div className="md:hidden space-y-6">
+          <div>
+            <h3 className="text-lg font-bold text-emerald-500 mb-4 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" />
+              Longevity Boosters
+            </h3>
+            <div className="space-y-4">
+              {boosterFactors.length > 0 ? boosterFactors.map((factor, i) => (
+                <FactorCard
+                  key={factor.category}
+                  {...factor}
+                  delay={200 + i * 150}
+                />
+              )) : (
+                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</p>
+              )}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-red-500 mb-4 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
+              Longevity Hazards
+            </h3>
+            <div className="space-y-4">
+              {hazardFactors.length > 0 ? hazardFactors.map((factor, i) => (
+                <FactorCard
+                  key={factor.category}
+                  {...factor}
+                  delay={200 + (boosterFactors.length + i) * 150}
+                />
+              )) : (
+                <p className="text-sm text-gray-400 text-center py-4">None of the factors you reported classify as a Longevity Hazard. Keep it up!</p>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Bonus factor cards — biological sex & family history */}
