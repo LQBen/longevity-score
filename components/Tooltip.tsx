@@ -39,7 +39,7 @@ export default function Tooltip({ text }: TooltipProps) {
       <button
         ref={buttonRef}
         type="button"
-        className="inline-flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-primary rounded-full hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+        className="inline-flex items-center justify-center w-10 h-10 text-lg font-extrabold text-white bg-primary rounded-full shadow-md shadow-primary/30 border-2 border-primary-dark hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary transition-colors active:scale-95"
         onClick={() => setOpen(!open)}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}

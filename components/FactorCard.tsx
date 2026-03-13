@@ -4,7 +4,7 @@ import { trackEvent, Events } from '@/lib/analytics';
 
 interface FactorCardProps {
   category: string;
-  classification: 'booster' | 'neutral' | 'hazard';
+  classification: 'booster' | 'hazard';
   message: string;
   cta: { text: string; url: string };
   delay: number;
@@ -12,13 +12,11 @@ interface FactorCardProps {
 
 const badgeConfig: Record<string, { style: string; label: string }> = {
   booster: { style: 'bg-emerald-500 text-white', label: 'Longevity Booster' },
-  neutral: { style: 'bg-gray-400 text-white', label: 'Neutral' },
   hazard: { style: 'bg-red-500 text-white', label: 'Longevity Hazard' },
 };
 
 const borderStyles: Record<string, string> = {
   booster: 'border-l-emerald-500',
-  neutral: 'border-l-gray-400',
   hazard: 'border-l-red-500',
 };
 

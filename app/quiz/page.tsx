@@ -173,6 +173,14 @@ export default function QuizPage() {
           <ResultsScreen result={result} onTryAgain={handleTryAgain} />
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="px-4 py-4 flex flex-col items-center gap-2 text-sm text-gray-400 max-w-4xl mx-auto w-full">
+        <span className="text-center text-[13px] text-gray-500">
+          Longevity Score is an informational tool and not a substitute for professional medical advice.
+        </span>
+        <span className="self-end">&copy; LongeviQuest 2026</span>
+      </footer>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { trackEvent, Events } from '@/lib/analytics';
 
 interface Factor {
   category: string;
-  classification: 'booster' | 'neutral' | 'hazard';
+  classification: 'booster' | 'hazard';
   message: string;
   cta: { text: string; url: string };
   points: number;
@@ -74,9 +74,9 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
   };
 
   // Factors are pre-sorted by classification then maxPoints from the server
-  // Desktop: boosters + neutrals on left, hazards on right
+  // Desktop: boosters on left, hazards on right
   const boosterFactors = result.factors.filter(
-    f => f.classification === 'booster' || f.classification === 'neutral'
+    f => f.classification === 'booster'
   );
   const hazardFactors = result.factors.filter(
     f => f.classification === 'hazard'
@@ -110,7 +110,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
             <span className={`inline-block text-lg sm:text-xl font-bold px-6 py-2 rounded-full ${badgeStyle} mb-4`}>
               {result.tier.label}
             </span>
-            <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto text-left">
+            <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto text-center">
               {result.tier.message}
             </p>
           </div>
@@ -214,13 +214,6 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
           </a>
         </div>
 
-        {/* Footer */}
-        <footer className="mt-8 px-4 py-4 flex flex-col items-center gap-2 text-sm text-gray-400">
-          <span className="text-center text-[13px] text-gray-500">
-            Longevity Score is an informational tool and not a substitute for professional medical advice.
-          </span>
-          <span className="self-end">&copy; LongeviQuest 2026</span>
-        </footer>
       </div>
     </div>
   );

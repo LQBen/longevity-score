@@ -181,7 +181,7 @@ export const tiers: TierDef[] = [
 interface ConditionRange {
   min: number;
   max: number;
-  classification: 'booster' | 'neutral' | 'hazard';
+  classification: 'booster' | 'hazard';
   message: string;
 }
 
@@ -198,8 +198,8 @@ export const factorConfigs: FactorConfig[] = [
     category: 'Smoking',
     questionIds: ['smoking'],
     conditions: [
-      { min: 12, max: 12, classification: 'booster', message: "Not smoking is the single most impactful longevity booster. The vast majority of supercentenarians never smoked. Scientific research over decades has identified smoking as the lifestyle habit most damaging to a person's longevity. By not smoking, you've likely added years to your life." },
-      { min: 11, max: 11, classification: 'booster', message: "Not smoking is the single most impactful longevity booster. Having only tried smoking a few times without developing a habit puts you in the same category as lifelong non-smokers. The vast majority of supercentenarians never smoked." },
+      { min: 12, max: 12, classification: 'booster', message: "Not smoking is the single most impactful longevity booster. Despite some notable exceptions, the vast majority of supercentenarians never smoked. Scientific research over decades has identified smoking as the lifestyle habit most damaging to a person's longevity. By not smoking, you've likely added years to your life." },
+      { min: 11, max: 11, classification: 'booster', message: "Not smoking is the single most impactful longevity booster. Having only tried smoking a few times without developing a habit puts you in the same category as lifelong non-smokers. Despite some notable exceptions, the vast majority of supercentenarians never smoked." },
       { min: 8, max: 8, classification: 'booster', message: "Quitting smoking is a major longevity booster — congratulations! Scientific research has identified smoking as the lifestyle habit most damaging to longevity. The good news is that within 10-15 years of quitting, most of the damage can be reversed. While some supercentenarians famously smoked, they are rare exceptions." },
       { min: 3, max: 3, classification: 'hazard', message: "Smoking occasionally is a longevity hazard, even if it's not routine. Scientific research over decades has identified smoking as the lifestyle habit most damaging to a person's longevity. While some supercentenarians famously smoked, they are rare exceptions. Reducing or eliminating your smoking — even occasional — would be one of the highest-impact changes you could make." },
       { min: 0, max: 0, classification: 'hazard', message: "Frequent smoking is the most significant longevity hazard in this assessment. Scientific research over decades has identified smoking as the lifestyle habit most damaging to a person's longevity. While some supercentenarians famously smoked, they are rare exceptions. Quitting smoking would likely have a bigger impact on your longevity than any other single change." },
@@ -222,7 +222,7 @@ export const factorConfigs: FactorConfig[] = [
     questionIds: ['stress'],
     conditions: [
       { min: 10, max: 10, classification: 'booster', message: "A low stress level is a major longevity booster. Almost all supercentenarians reported low stress levels. A calm, even-keeled temperament is one of the most consistent traits among the world's longest-lived people. Kudos to you for finding ways to cope with life's challenges." },
-      { min: 6, max: 6, classification: 'neutral', message: "A medium stress level is a moderate longevity hazard. Almost all supercentenarians reported low stress levels. You're not in the danger zone, but reducing your stress could meaningfully improve your longevity outlook. Even small coping strategies can make a difference." },
+      { min: 6, max: 6, classification: 'booster', message: "A medium stress level is not ideal, but you're not quite in the danger zone. Almost all supercentenarians reported low stress levels. Reducing your stress could meaningfully improve your longevity outlook. Even small coping strategies can make a difference." },
       { min: 3, max: 3, classification: 'hazard', message: "A varying or inconsistent stress level is a longevity hazard. Almost all supercentenarians reported consistently low stress. The unpredictability of your stress may be as harmful as the stress itself. Finding ways to create more stability and calm in your daily routine could help." },
       { min: 0, max: 0, classification: 'hazard', message: "A high level of stress is a serious longevity hazard. Almost all supercentenarians reported low stress levels — it's one of the most consistent traits among the world's longest-lived people. While it's often difficult to fix the root causes of stress, finding ways to cope with it should be a priority. Even small changes can make a big difference over time." },
     ],
@@ -234,7 +234,7 @@ export const factorConfigs: FactorConfig[] = [
     conditions: [
       { min: 7, max: 7, classification: 'booster', message: "Even past the age of 100, most supercentenarians feel optimistic about the future. Their positive outlook often comes from focusing on their own lives rather than on world events outside their control. You share this positive outlook, making it a longevity booster for you." },
       { min: 5, max: 5, classification: 'booster', message: "Even past the age of 100, most supercentenarians feel optimistic about the future. Their positive outlook often comes from focusing on their own lives rather than on world events outside their control. Accepting whatever comes reflects a calm equanimity that many supercentenarians share. This is a longevity booster for you." },
-      { min: 3, max: 3, classification: 'neutral', message: "Even past the age of 100, most supercentenarians feel optimistic about the future. You reported that you don't think much about the future. If that means you enjoy living in the moment, it may be a minor longevity booster. But if it reflects avoidance or apathy, it could work against you." },
+      { min: 3, max: 3, classification: 'hazard', message: "Even past the age of 100, most supercentenarians feel optimistic about the future. You reported that you don't think much about the future. While living in the moment can be positive, a lack of forward-looking engagement is associated with reduced longevity." },
       { min: 1, max: 1, classification: 'hazard', message: "Even past the age of 100, most supercentenarians feel optimistic about the future. Their positive outlook often comes from focusing on their own lives rather than on world events outside their control. Feeling nervous or concerned about the future is a longevity hazard, but it's one that can shift with deliberate focus on what you can control." },
       { min: 0, max: 0, classification: 'hazard', message: "Even past the age of 100, most supercentenarians feel optimistic about the future. A pessimistic outlook on the future is a significant longevity hazard. The world's longest-lived people tend to focus on their own lives and the people around them rather than on events beyond their control. Shifting your focus inward may help." },
     ],
@@ -244,8 +244,8 @@ export const factorConfigs: FactorConfig[] = [
     category: 'Attitude on Aging',
     questionIds: ['aging_attitude'],
     conditions: [
-      { min: 6, max: 6, classification: 'booster', message: "Not many people who fear getting old make it to age 110. Your positive or neutral attitude toward aging is a longevity booster. Supercentenarians tend to embrace aging or simply not dwell on it." },
-      { min: 3, max: 3, classification: 'neutral', message: "Not many people who fear getting old make it to age 110. However, some supercentenarians remained concerned about their appearance even into very late age. This vanity may actually help — looking younger can make someone feel younger. Your attitude is a minor longevity booster." },
+      { min: 6, max: 6, classification: 'booster', message: "Not many people who fear getting old make it to age 110. Your attitude toward aging is a longevity booster. Supercentenarians tend to embrace aging or simply not dwell on it." },
+      { min: 3, max: 3, classification: 'booster', message: "Not many people who fear getting old make it to age 110. Some supercentenarians remained concerned about their appearance even into very late age. This vanity may actually help — looking younger can make someone feel younger. Your attitude is a longevity booster." },
       { min: 1, max: 1, classification: 'hazard', message: "Not many people who fear getting old make it to age 110. Worrying that your best years are behind you is a longevity hazard. Supercentenarians overwhelmingly report feeling that life continues to have value and meaning at every age." },
       { min: 0, max: 0, classification: 'hazard', message: "Not many people who fear getting old make it to age 110. Fear or dread about aging is a significant longevity hazard. The world's longest-lived people tend to approach aging with acceptance or even enthusiasm. Getting to know the stories of LongeviQuest-verified supercentenarians may help you see that aging doesn't have to be something you dread." },
     ],
@@ -267,7 +267,7 @@ export const factorConfigs: FactorConfig[] = [
     questionIds: ['diet', 'junk_food'],
     conditions: [
       { min: 8, max: 10, classification: 'booster', message: "Your reported diet is a longevity booster. Most supercentenarians kept balanced diets rich in whole foods. Among those with strong food preferences, seafood was more common than meat or plants. Treating yourself is fine — most supercentenarians had a favorite indulgence — and moderation is what matters. Great job." },
-      { min: 6, max: 7, classification: 'neutral', message: "Your reported diet is not significantly hurting or helping your score. Most supercentenarians kept balanced diets rich in whole foods. You're close to a longevity booster here — a few tweaks toward more whole foods or moderating snack frequency could tip the scale." },
+      { min: 6, max: 7, classification: 'booster', message: "Your reported diet is a minor longevity booster. Most supercentenarians kept balanced diets rich in whole foods. You're close to optimal here — a few tweaks toward more whole foods or moderating snack frequency could strengthen this factor further." },
       { min: 3, max: 5, classification: 'hazard', message: "Your reported diet is a longevity hazard. Most supercentenarians kept balanced diets rich in whole foods. Among those with strong food preferences, seafood was more common than meat. Treating yourself occasionally is fine — most supercentenarians had a favorite unhealthy snack — but moderation is key. Consider shifting toward more balanced, whole-food meals." },
       { min: 0, max: 2, classification: 'hazard', message: "Your reported diet is a significant longevity hazard. Most supercentenarians kept balanced diets rich in whole foods and ate indulgences in moderation. Your combination of diet type and snack frequency works against you. Even gradual shifts toward more balanced meals and less frequent junk food could meaningfully improve your longevity outlook." },
     ],
@@ -279,7 +279,7 @@ export const factorConfigs: FactorConfig[] = [
     conditions: [
       { min: 6, max: 6, classification: 'booster', message: "Nearly all supercentenarians report having religious or spiritual beliefs, regardless of location or culture. Additional research has linked longevity to a sense that life has purpose. Your regular observance is a longevity booster." },
       { min: 4, max: 4, classification: 'booster', message: "Nearly all supercentenarians report having religious or spiritual beliefs, regardless of location or culture. Even without regular observance, having spiritual beliefs may provide a sense of purpose and community that supports longevity. This is a longevity booster for you." },
-      { min: 2, max: 2, classification: 'neutral', message: "Nearly all supercentenarians report having religious or spiritual beliefs. You preferred not to share details, which is completely fine. Research has linked longevity to feeling that life has purpose — whether that comes from faith, community, or something else entirely." },
+      { min: 2, max: 2, classification: 'hazard', message: "Nearly all supercentenarians report having religious or spiritual beliefs. You preferred not to share details, which is completely fine. However, statistically, the absence of expressed spiritual beliefs is a longevity hazard. Purpose can come from many sources beyond religion." },
       { min: 1, max: 1, classification: 'hazard', message: "Nearly all supercentenarians report having religious or spiritual beliefs, regardless of location or culture. Additional research has linked longevity to a sense that life has purpose. This factor is statistically a longevity hazard for you, but it can be outweighed by others — and purpose can come from many sources beyond religion." },
     ],
     cta: { text: 'Learn more about spirituality and longevity →', url: 'https://longeviquest.com' },
@@ -299,7 +299,7 @@ export const factorConfigs: FactorConfig[] = [
     questionIds: ['marriage', 'children'],
     conditions: [
       { min: 7, max: 8, classification: 'booster', message: "Most supercentenarians were married and had children at some point in their lives. Having both is a longevity booster — the combination provides deep social bonds, purpose, and a support network that extends into old age." },
-      { min: 3, max: 6, classification: 'neutral', message: "Most supercentenarians were married with children, but not all. Having experienced one of the two still provides some of the social bonding and sense of purpose associated with longevity. This is a minor longevity booster." },
+      { min: 3, max: 6, classification: 'booster', message: "Most supercentenarians were married with children, but not all. Having experienced one of the two still provides some of the social bonding and sense of purpose associated with longevity. This is a longevity booster." },
       { min: 0, max: 0, classification: 'hazard', message: "Most supercentenarians were married with children — but some reached 110 without either. Statistically, not having married or had children is a longevity hazard. However, so long as you are content with your life choices and have meaningful social connections, this factor can be outweighed by others." },
     ],
     cta: { text: 'Learn more about family and longevity →', url: 'https://longeviquest.com' },
@@ -309,7 +309,7 @@ export const factorConfigs: FactorConfig[] = [
     questionIds: ['sleep_hours', 'sleep_pattern'],
     conditions: [
       { min: 7, max: 7, classification: 'booster', message: "Longevity is fueled by good sleep. Sleep is measured both in duration and consistency. You're doing well in both categories — getting adequate hours with a reliable pattern. Your sleep habits are a longevity booster." },
-      { min: 4, max: 6, classification: 'neutral', message: "Longevity is fueled by good sleep, measured in both duration and consistency. You're doing reasonably well but there's room for improvement in either how long you sleep or how consistent your pattern is. Small adjustments could turn this into a full longevity booster." },
+      { min: 4, max: 6, classification: 'booster', message: "Longevity is fueled by good sleep, measured in both duration and consistency. You're doing reasonably well in at least one of these areas. Small adjustments could strengthen this factor further — but you're on the right track." },
       { min: 1, max: 3, classification: 'hazard', message: "Longevity is fueled by good sleep, measured in both duration and consistency. Your sleep habits are a longevity hazard — you may be getting too few hours, sleeping on an irregular schedule, or both. Improving your sleep routine could have a meaningful impact on your longevity outlook." },
       { min: 0, max: 0, classification: 'hazard', message: "Your sleep habits are a significant longevity hazard. Getting under 6 hours of sleep with an irregular pattern works strongly against you. Longevity is fueled by consistent, adequate sleep. This is one of the most actionable factors in the assessment — improving your sleep routine could deliver real results." },
     ],
@@ -320,7 +320,7 @@ export const factorConfigs: FactorConfig[] = [
     questionIds: ['alcohol'],
     conditions: [
       { min: 4, max: 4, classification: 'booster', message: "Avoiding alcohol — or limiting it to religious observance — is a longevity booster. While some supercentenarians drank in moderation, consuming alcohol regularly for relaxation or pleasure is not a common behavior among the world's longest-lived people." },
-      { min: 3, max: 3, classification: 'neutral', message: "Quitting alcohol is a positive step for longevity. While some supercentenarians drank in moderation, those who didn't drink at all are more common. Having quit puts you in a better position than current drinkers, even social ones." },
+      { min: 3, max: 3, classification: 'booster', message: "Quitting alcohol is a longevity booster. While some supercentenarians drank in moderation, those who didn't drink at all are more common. Having quit puts you in a better position than current drinkers, even social ones." },
       { min: 2, max: 2, classification: 'hazard', message: "Social or occasional drinking is a moderate longevity hazard. While some supercentenarians did drink, those who abstained are more common among the world's longest-lived people. Having an active social life is a positive factor — but alcohol itself is not." },
       { min: 0, max: 0, classification: 'hazard', message: "Frequently consuming alcohol is a significant longevity hazard. Even supercentenarians who drank did so in moderation. Reducing your alcohol consumption would likely improve your longevity outlook." },
     ],
@@ -331,7 +331,7 @@ export const factorConfigs: FactorConfig[] = [
     questionIds: ['living_environment'],
     conditions: [
       { min: 3, max: 3, classification: 'booster', message: "Living in a rural area or village is a longevity booster. Rural environments are heavily represented in the supercentenarian population. Reasons may include better air quality, closer family connections, and the physical activity associated with rural life." },
-      { min: 2, max: 2, classification: 'neutral', message: "Most supercentenarians do not live in big cities. Living in a suburban area or town is a minor longevity booster. You get some of the benefits of lower density — less pollution, potentially stronger community ties — without the isolation of very rural areas." },
+      { min: 2, max: 2, classification: 'booster', message: "Most supercentenarians do not live in big cities. Living in a suburban area or town is a longevity booster. You get some of the benefits of lower density — less pollution, potentially stronger community ties — without the isolation of very rural areas." },
       { min: 0, max: 0, classification: 'hazard', message: "While not a major factor, living in an urban area is a minor longevity hazard. City dwellers are underrepresented in the supercentenarian population, possibly due to pollution, noise, and transit stress. But what you do every day matters far more than where you live — this is one of the least important factors in the assessment." },
     ],
     cta: { text: 'Learn more about environment and longevity →', url: 'https://longeviquest.com' },
@@ -341,8 +341,8 @@ export const factorConfigs: FactorConfig[] = [
     questionIds: ['physique'],
     conditions: [
       { min: 3, max: 3, classification: 'booster', message: "Most supercentenarians maintained a thin to average physique throughout their lives. Your reported physique aligns with this pattern, making it a minor longevity booster. The circumstances that shape our physique are mostly factored in elsewhere in this assessment." },
-      { min: 1, max: 1, classification: 'neutral', message: "Your reported physique is a minor factor. Being stocky isn't ideal from a longevity perspective, but it's far from the most important variable. The circumstances that shape our physique are mostly factored in elsewhere in this assessment." },
-      { min: 0, max: 0, classification: 'hazard', message: "Being significantly underweight or overweight is a longevity hazard. Most supercentenarians maintained a thin to average physique. However, physique is one of the least important factors in this assessment — what you do (activity, diet, stress management) matters more than what you weigh." },
+      { min: 1, max: 1, classification: 'hazard', message: "Your reported physique is a longevity hazard. Being stocky is not aligned with patterns seen in supercentenarians, who overwhelmingly maintained a thin to average build. What you do — activity, diet, stress management — can help offset this factor." },
+      { min: 0, max: 0, classification: 'hazard', message: "Being significantly underweight or overweight is a longevity hazard. Most supercentenarians maintained a thin to average physique. What you do — activity, diet, stress management — can help offset this factor." },
     ],
     cta: { text: 'Learn more about physique and longevity →', url: 'https://longeviquest.com' },
   },
@@ -355,7 +355,7 @@ export interface BonusConfig {
   triggerValue: string;
   points: number;
   bonusMessage: string;
-  neutralMessage: string;
+  nonBonusMessage: string;
 }
 
 export const bonusConfigs: BonusConfig[] = [
@@ -365,7 +365,7 @@ export const bonusConfigs: BonusConfig[] = [
     triggerValue: 'female',
     points: 2,
     bonusMessage: "Being female is widely recognized as a biological longevity advantage. About 90% of supercentenarians are female. This isn't a lifestyle factor — it's a biological one. Your Longevity Score includes a +2 bonus displayed separately from your lifestyle score.",
-    neutralMessage: "Being female is widely recognized as a biological longevity advantage — about 90% of supercentenarians are female. This isn't a lifestyle factor, so you weren't penalized. Your Longevity Score measures what you can control.",
+    nonBonusMessage: "Being female is widely recognized as a biological longevity advantage — about 90% of supercentenarians are female. This isn't a lifestyle factor, so you weren't penalized. Your Longevity Score measures what you can control.",
   },
   {
     questionId: 'family_longevity',
@@ -373,7 +373,7 @@ export const bonusConfigs: BonusConfig[] = [
     triggerValue: 'yes',
     points: 2,
     bonusMessage: "Having direct relatives who reached the age of 90 provides an inherited longevity advantage. Your family history earns you a +2 bonus displayed separately from your lifestyle score. The science is clear — longevity runs in families.",
-    neutralMessage: "Having direct relatives who reached 90 provides an inherited longevity advantage. Since Longevity Score is a lifestyle assessment, you weren't penalized for not having this. Your score measures what you can control.",
+    nonBonusMessage: "Having direct relatives who reached 90 provides an inherited longevity advantage. Since Longevity Score is a lifestyle assessment, you weren't penalized for not having this. Your score measures what you can control.",
   },
 ];
 
@@ -428,7 +428,7 @@ export function calculateScore(answers: Record<string, string | number>) {
   // Calculate factor breakdowns
   const factors: Array<{
     category: string;
-    classification: 'booster' | 'neutral' | 'hazard';
+    classification: 'booster' | 'hazard';
     message: string;
     cta: { text: string; url: string };
     points: number;
@@ -461,8 +461,8 @@ export function calculateScore(answers: Record<string, string | number>) {
     }
   }
 
-  // Sort factors: boosters first, then neutral, then hazards; within each group by maxPoints desc
-  const classificationOrder: Record<string, number> = { booster: 0, neutral: 1, hazard: 2 };
+  // Sort factors: boosters first, then hazards; within each group by maxPoints desc
+  const classificationOrder: Record<string, number> = { booster: 0, hazard: 1 };
   factors.sort((a, b) => {
     const classDiff = classificationOrder[a.classification] - classificationOrder[b.classification];
     if (classDiff !== 0) return classDiff;
