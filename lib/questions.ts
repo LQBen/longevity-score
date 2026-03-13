@@ -16,23 +16,7 @@ export interface Question {
 }
 
 export const questions: Question[] = [
-  // 1. Who are you answering for? (Unscored)
-  {
-    id: 'who_answering_for',
-    category: 'Context',
-    text: 'Who are you answering for?',
-    type: 'select',
-    options: [
-      { id: 'me', text: 'Me' },
-      { id: 'spouse', text: 'Spouse / Significant Other' },
-      { id: 'parent', text: 'Parent' },
-      { id: 'grandparent', text: 'Grandparent' },
-      { id: 'child', text: 'Child' },
-      { id: 'friend', text: 'Friend' },
-      { id: 'other', text: 'Other' },
-    ],
-  },
-  // 2. How old are you now? (Age slider)
+  // 1. How old are you now? (Age slider)
   {
     id: 'age',
     category: 'Age',
@@ -191,8 +175,8 @@ export const questions: Question[] = [
     options: [
       { id: 'regularly_observant', text: 'Yes, observant' },
       { id: 'not_regularly', text: 'Yes, but not observant' },
-      { id: 'prefer_not_say', text: 'Prefer not to say' },
       { id: 'not_particularly', text: 'Not particularly' },
+      { id: 'prefer_not_say', text: 'Prefer not to say' },
     ],
   },
   // 14. Do you work? (Tier 2)
@@ -200,7 +184,7 @@ export const questions: Question[] = [
     id: 'work',
     category: 'Work History',
     text: 'Do you work?',
-    infobox: "Choosing 'Retired' factors in that you worked for many years prior to retiring.",
+    infobox: "If you're retired, we'll factor in your years of working life.",
     type: 'select',
     options: [
       { id: 'full_time', text: 'Yes, full-time' },
@@ -304,19 +288,6 @@ export const questions: Question[] = [
       { id: 'prefer_not_say', text: 'Other / prefer not to say' },
     ],
   },
-  // 22. How long do you want to live? (Unscored)
-  {
-    id: 'want_to_live',
-    category: 'Post-Results',
-    text: 'How long do you want to live?',
-    type: 'select',
-    options: [
-      { id: 'forever', text: 'Forever' },
-      { id: '110_plus', text: '110+ years' },
-      { id: '91_110', text: '91-110' },
-      { id: '81_90', text: '81-90' },
-      { id: 'no_aspiration', text: "I don't have any particular longevity aspiration." },
-    ],
-  },
+  // Q22 REMOVED — "How long do you want to live?" (unscored, added friction)
   // Q23 REMOVED — "What do you expect your Longevity Score will be?"
 ];

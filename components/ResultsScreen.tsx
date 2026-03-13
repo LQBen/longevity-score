@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import ScoreBar from './ScoreBar';
 import FactorCard from './FactorCard';
+import TierBadgeReveal from './TierBadgeReveal';
 import { trackEvent, Events } from '@/lib/analytics';
 
 interface Factor {
@@ -33,14 +34,6 @@ interface ResultsScreenProps {
   onTryAgain: () => void;
 }
 
-const tierBadgeStyles: Record<string, string> = {
-  'Longevity Champion': 'bg-amber-400 text-amber-900 border-2 border-amber-500',
-  'Longevity Optimized': 'bg-primary/15 text-primary border-2 border-primary',
-  'Longevity Inclined': 'bg-emerald-100 text-emerald-700 border-2 border-emerald-400',
-  'Longevity Enabled': 'bg-amber-100 text-amber-700 border-2 border-amber-400',
-  'Longevity Challenged': 'bg-orange-100 text-orange-700 border-2 border-orange-400',
-  'Longevity Warning': 'bg-red-100 text-red-700 border-2 border-red-400',
-};
 
 export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps) {
   useEffect(() => {
@@ -82,8 +75,6 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
     f => f.classification === 'hazard'
   );
 
-  const badgeStyle = tierBadgeStyles[result.tier.label] || 'bg-gray-100 text-gray-700 border-2 border-gray-300';
-
   return (
     <div className="w-full">
       {/* Logo */}
@@ -107,9 +98,9 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
           <ScoreBar score={result.score} />
 
           <div className="mt-8">
-            <span className={`inline-block text-lg sm:text-xl font-bold px-6 py-2 rounded-full ${badgeStyle} mb-4`}>
-              {result.tier.label}
-            </span>
+            <div className="mb-4">
+              <TierBadgeReveal tierLabel={result.tier.label} />
+            </div>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto text-center">
               {result.tier.message}
             </p>
@@ -185,8 +176,8 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
           ))}
         </div>
 
-        {/* Age factor callout */}
-        <div className="mt-10 bg-card-bg rounded-xl p-6 border border-gray-200">
+        {/* Age factor callout — distinct neutral styling */}
+        <div className="mt-10 bg-white rounded-xl shadow-md p-5 border-l-4 border-l-slate-400">
           <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">
             Age Factor
           </h3>

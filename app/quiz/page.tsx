@@ -1,22 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { questions } from '@/lib/questions';
 import { trackEvent, Events } from '@/lib/analytics';
 import ProgressBar from '@/components/ProgressBar';
 import QuizQuestion from '@/components/QuizQuestion';
 import EmailCapture from '@/components/EmailCapture';
+import ScoreCalculating from '@/components/ScoreCalculating';
 import ResultsScreen, { ScoreResult } from '@/components/ResultsScreen';
 
-type Screen = 'quiz' | 'email' | 'results';
+type Screen = 'quiz' | 'email' | 'calculating' | 'results';
 
 export default function QuizPage() {
   const [screen, setScreen] = useState<Screen>('quiz');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | number>>({});
   const [result, setResult] = useState<ScoreResult | null>(null);
-  const [loading, setLoading] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const resultRef = useRef<ScoreResult | null>(null);
 
   useEffect(() => {
     trackEvent(Events.QUIZ_STARTED);
@@ -74,7 +75,10 @@ export default function QuizPage() {
   };
 
   const fetchResults = async () => {
-    setLoading(true);
+    // Show calculating animation immediately
+    setScreen('calculating');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     try {
       const res = await fetch('/api/score', {
         method: 'POST',
@@ -82,16 +86,21 @@ export default function QuizPage() {
         body: JSON.stringify({ answers }),
       });
       const data = await res.json();
+      resultRef.current = data;
       setResult(data);
-      setScreen('results');
     } catch (err) {
       console.error('Error fetching score:', err);
       alert('Something went wrong calculating your score. Please try again.');
-    } finally {
-      setLoading(false);
+      setScreen('email');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleCalculatingComplete = useCallback(() => {
+    if (resultRef.current) {
+      setScreen('results');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, []);
 
   const handleEmailSubmit = () => {
     fetchResults();
@@ -106,13 +115,12 @@ export default function QuizPage() {
     setCurrentQuestion(0);
     setAnswers({});
     setResult(null);
+    resultRef.current = null;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Progress calculation: use currentQuestion + 1 so Q1 shows ~5%
-  const progressCurrent = screen === 'email' || screen === 'results'
-    ? totalQuestions
-    : currentQuestion + 1;
+  const progressCurrent = currentQuestion + 1;
 
   return (
     <div className="min-h-screen flex flex-col bg-card-bg">
@@ -129,8 +137,8 @@ export default function QuizPage() {
         </div>
       )}
 
-      {/* Progress bar */}
-      {screen !== 'results' && (
+      {/* Progress bar — only shown during quiz questions */}
+      {screen === 'quiz' && (
         <div className="px-4">
           <ProgressBar current={progressCurrent} total={totalQuestions} />
         </div>
@@ -155,18 +163,15 @@ export default function QuizPage() {
           </div>
         )}
 
-        {screen === 'email' && !loading && (
+        {screen === 'email' && (
           <EmailCapture
             onSubmit={handleEmailSubmit}
             onSkip={handleEmailSkip}
           />
         )}
 
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
-            <p className="text-lg text-gray-600">Calculating your Longevity Score...</p>
-          </div>
+        {screen === 'calculating' && (
+          <ScoreCalculating onComplete={handleCalculatingComplete} />
         )}
 
         {screen === 'results' && result && (
