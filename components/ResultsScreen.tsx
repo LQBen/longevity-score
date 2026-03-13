@@ -144,7 +144,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + i * 200}
                 />
               )) : (
-                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</div>
+                <div className="bg-gray-100 rounded-xl p-6 text-base text-gray-500 text-center">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</div>
               )}
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + (boosterFactors.length + i) * 200}
                 />
               )) : (
-                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Hazard. Keep it up!</div>
+                <div className="bg-gray-100 rounded-xl p-6 text-base text-gray-500 text-center">None of the factors you reported classify as a Longevity Hazard. Keep it up!</div>
               )}
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + i * 150}
                 />
               )) : (
-                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</div>
+                <div className="bg-gray-100 rounded-xl p-6 text-base text-gray-500 text-center">None of the factors you reported classify as a Longevity Booster. See your hazards for areas to improve.</div>
               )}
             </div>
           </div>
@@ -201,7 +201,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                   delay={200 + (boosterFactors.length + i) * 150}
                 />
               )) : (
-                <div className="bg-gray-50 rounded-xl p-5 text-sm text-gray-400 text-center">None of the factors you reported classify as a Longevity Hazard. Keep it up!</div>
+                <div className="bg-gray-100 rounded-xl p-6 text-base text-gray-500 text-center">None of the factors you reported classify as a Longevity Hazard. Keep it up!</div>
               )}
             </div>
           </div>
