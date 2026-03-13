@@ -103,16 +103,18 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-card-bg">
-      {/* Logo */}
-      <div className="pt-4 pb-3 flex justify-center">
-        <a href="/">
-          <img
-            src="/longeviquest-logo-1600.png"
-            alt="LongeviQuest"
-            className="h-8 sm:h-10"
-          />
-        </a>
-      </div>
+      {/* Logo (hidden on results — ResultsScreen has its own) */}
+      {screen !== 'results' && (
+        <div className="pt-4 pb-3 flex justify-center">
+          <a href="/">
+            <img
+              src="/longeviquest-logo-1600.png"
+              alt="LongeviQuest"
+              className="h-8 sm:h-10"
+            />
+          </a>
+        </div>
+      )}
 
       {/* Progress bar */}
       {screen !== 'results' && (
