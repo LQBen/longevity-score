@@ -107,7 +107,7 @@ export default function QuizPage() {
       <div className="pt-4 pb-3 flex justify-center">
         <a href="/">
           <img
-            src="https://longeviquest.com/wp-content/uploads/2023/06/longeviquest-logo.png"
+            src="/longeviquest-logo-1600.png"
             alt="LongeviQuest"
             className="h-8 sm:h-10"
           />

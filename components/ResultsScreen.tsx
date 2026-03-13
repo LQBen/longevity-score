@@ -196,19 +196,23 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
           >
             Try Again
           </button>
-          <p className="text-sm text-gray-500 italic">
-            *Longevity Score is an informational tool and not a substitute for professional medical advice.
-          </p>
-          <p className="text-sm text-gray-400">© LongeviQuest 2026</p>
           <a
             href="https://longeviquest.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-primary hover:underline"
+            className="block text-sm text-primary hover:underline"
           >
             longeviquest.com
           </a>
         </div>
+
+        {/* Footer */}
+        <footer className="mt-8 px-4 py-4 flex flex-col items-center gap-2 text-sm text-gray-400">
+          <span className="text-center italic text-xs">
+            Longevity Score is an informational tool and not a substitute for professional medical advice.
+          </span>
+          <span className="self-end">&copy; LongeviQuest 2026</span>
+        </footer>
       </div>
     </div>
   );
