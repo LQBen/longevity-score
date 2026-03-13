@@ -33,6 +33,11 @@ export default function ScoreCalculating({ onComplete }: ScoreCalculatingProps) 
     requestAnimationFrame(tick);
   }, [onComplete]);
 
+  // Radial layout calculations for mobile
+  const cx = 150; // center x
+  const cy = 150; // center y
+  const radius = 115; // distance from center to factor labels
+
   return (
     <div className="w-full max-w-lg mx-auto py-12">
       <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-10">
@@ -82,64 +87,74 @@ export default function ScoreCalculating({ onComplete }: ScoreCalculatingProps) 
           </svg>
         </div>
 
-        {/* Mobile: centered vertical layout */}
+        {/* Mobile: centered radial layout */}
         <div className="flex sm:hidden flex-col items-center mb-8">
-          <svg viewBox="0 0 240 360" className="w-full h-auto max-w-[240px]" xmlns="http://www.w3.org/2000/svg">
-            {/* Factor labels stacked vertically at top */}
+          <svg viewBox="0 0 300 300" className="w-full h-auto max-w-[280px]" xmlns="http://www.w3.org/2000/svg">
+            {/* Factor labels arranged in a circle */}
             {FACTORS.map((factor, i) => {
-              const col = i % 2;
-              const row = Math.floor(i / 2);
-              const x = col === 0 ? 30 : 150;
-              const y = 18 + row * 32;
-              const delay = i * 0.2;
-              // Flow path: from label down to the score card center
-              const endX = 120;
-              const endY = 260;
-              const ctrlY = y + 40;
+              const angle = (i / FACTORS.length) * 2 * Math.PI - Math.PI / 2;
+              const fx = cx + radius * Math.cos(angle);
+              const fy = cy + radius * Math.sin(angle);
+              const delay = i * 0.18;
 
               return (
                 <g key={factor}>
-                  <rect x={x - 46} y={y - 10} rx="8" ry="8" width="92" height="20" fill="#0BBAB4" opacity="0.12" />
+                  {/* Label background pill */}
+                  <rect
+                    x={fx - 38}
+                    y={fy - 9}
+                    rx="8"
+                    ry="8"
+                    width="76"
+                    height="18"
+                    fill="#0BBAB4"
+                    opacity="0.12"
+                  />
+                  {/* Label text */}
                   <text
-                    x={x}
-                    y={y + 4}
+                    x={fx}
+                    y={fy + 4}
                     textAnchor="middle"
                     fill="#0BBAB4"
-                    fontSize="9"
+                    fontSize="7.5"
                     fontWeight="600"
                     fontFamily="system-ui, sans-serif"
                   >
                     {factor}
                   </text>
-                  {/* Flow line down to score card */}
-                  <path
-                    d={`M${x} ${y + 10} Q${x} ${ctrlY} ${endX} ${endY}`}
+                  {/* Flow line from label toward center */}
+                  <line
+                    x1={fx}
+                    y1={fy}
+                    x2={cx}
+                    y2={cy}
                     stroke="#0BBAB4"
-                    strokeWidth="1"
-                    fill="none"
+                    strokeWidth="0.8"
                     opacity="0.15"
                   />
-                  {/* Animated dot flowing downward */}
+                  {/* Animated dot flowing inward */}
                   <circle r="2.5" fill="#0BBAB4" opacity="0.7">
                     <animateMotion
-                      dur="1.6s"
+                      dur="1.5s"
                       repeatCount="indefinite"
-                      path={`M${x} ${y + 10} Q${x} ${ctrlY} ${endX} ${endY}`}
+                      path={`M${fx - cx} ${fy - cy} L0 0`}
                       begin={`${delay}s`}
                     />
+                    <set attributeName="cx" to={cx} />
+                    <set attributeName="cy" to={cy} />
                   </circle>
                 </g>
               );
             })}
 
-            {/* Score card at bottom center */}
-            <rect x="55" y="270" rx="12" ry="12" width="130" height="70" fill="white" stroke="#0BBAB4" strokeWidth="2" />
-            <text x="120" y="302" textAnchor="middle" fill="#0BBAB4" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif">Longevity</text>
-            <text x="120" y="317" textAnchor="middle" fill="#0BBAB4" fontSize="11" fontWeight="700" fontFamily="system-ui, sans-serif">Score</text>
+            {/* Center score card */}
+            <rect x={cx - 42} y={cy - 30} rx="10" ry="10" width="84" height="60" fill="white" stroke="#0BBAB4" strokeWidth="2" />
+            <text x={cx} y={cy - 5} textAnchor="middle" fill="#0BBAB4" fontSize="9" fontWeight="700" fontFamily="system-ui, sans-serif">Longevity</text>
+            <text x={cx} y={cy + 7} textAnchor="middle" fill="#0BBAB4" fontSize="9" fontWeight="700" fontFamily="system-ui, sans-serif">Score</text>
 
             {/* Progress bar inside card */}
-            <rect x="80" y="328" rx="3" ry="3" width="80" height="6" fill="#0BBAB4" opacity="0.1" />
-            <rect x="80" y="328" rx="3" ry="3" height="6" fill="#0BBAB4" opacity="0.4" width={80 * progress} />
+            <rect x={cx - 28} y={cy + 14} rx="2.5" ry="2.5" width="56" height="5" fill="#0BBAB4" opacity="0.1" />
+            <rect x={cx - 28} y={cy + 14} rx="2.5" ry="2.5" height="5" fill="#0BBAB4" opacity="0.4" width={56 * progress} />
           </svg>
         </div>
 

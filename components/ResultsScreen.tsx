@@ -176,6 +176,29 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
           ))}
         </div>
 
+        {/* Bonus factor cards — biological sex & family history */}
+        {result.bonuses.length > 0 && (
+          <div className="mt-10 space-y-4">
+            {result.bonuses.map((bonus, i) => (
+              <div
+                key={bonus.category}
+                className="bg-white rounded-xl shadow-md p-5 border-l-4 border-l-violet-400 animate-fade-in-up"
+                style={{ animationDelay: `${400 + i * 200}ms` }}
+              >
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">
+                  {bonus.category}
+                </h3>
+                <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-violet-100 text-violet-700 mb-3">
+                  Biological Bonus +{bonus.points}
+                </span>
+                <p className="text-base text-gray-700 leading-relaxed">
+                  {bonus.message}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Age factor callout — distinct neutral styling */}
         <div className="mt-10 bg-white rounded-xl shadow-md p-5 border-l-4 border-l-slate-400">
           <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">
