@@ -364,7 +364,7 @@ export const bonusConfigs: BonusConfig[] = [
     category: 'Female Longevity Advantage',
     triggerValue: 'female',
     points: 2,
-    bonusMessage: "Being female is widely recognized as a biological longevity advantage. About 90% of supercentenarians are female. This isn't a lifestyle factor — it's a biological one. Your Longevity Score includes a bonus factored into your score.",
+    bonusMessage: "Being female is widely recognized as a biological longevity advantage. About 90% of supercentenarians are female. This biological bonus is factored into your Longevity Score.",
     nonBonusMessage: "Being female is widely recognized as a biological longevity advantage — about 90% of supercentenarians are female. This isn't a lifestyle factor, so you weren't penalized. Your Longevity Score measures what you can control.",
   },
   {
