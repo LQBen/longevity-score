@@ -3,16 +3,17 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 
 const TIERS = [
-  { label: 'Longevity Warning', color: '#E74C3C', bg: 'bg-red-100', text: 'text-red-700', border: 'border-red-400' },
-  { label: 'Longevity Challenged', color: '#F59E0B', bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-400' },
-  { label: 'Longevity Enabled', color: '#0EA5E9', bg: 'bg-sky-100', text: 'text-sky-700', border: 'border-sky-400' },
-  { label: 'Longevity Inclined', color: '#14B8A6', bg: 'bg-teal-100', text: 'text-teal-700', border: 'border-teal-400' },
-  { label: 'Longevity Optimized', color: '#94A3B8', bg: 'bg-slate-100', text: 'text-slate-700', border: 'border-slate-400' },
-  { label: 'Longevity Champion', color: '#D4A017', bg: 'bg-amber-100', text: 'text-amber-800', border: 'border-amber-500' },
+  { label: 'Longevity Warning',    color: '#E74C3C', bg: '#FEE2E2', textColor: '#B91C1C', borderColor: '#F87171' },
+  { label: 'Longevity Challenged', color: '#F59E0B', bg: '#FEF3C7', textColor: '#B45309', borderColor: '#FBBF24' },
+  { label: 'Longevity Enabled',    color: '#0EA5E9', bg: '#E0F2FE', textColor: '#0369A1', borderColor: '#38BDF8' },
+  { label: 'Longevity Inclined',   color: '#14B8A6', bg: '#CCFBF1', textColor: '#0F766E', borderColor: '#2DD4BF' },
+  { label: 'Longevity Optimized',  color: '#94A3B8', bg: '#F1F5F9', textColor: '#475569', borderColor: '#94A3B8', metallic: 'silver' as const },
+  { label: 'Longevity Champion',   color: '#CA8A04', bg: '#FEF9C3', textColor: '#854D0E', borderColor: '#EAB308', metallic: 'gold' as const },
 ];
 
-const BADGE_WIDTH = 112;
-const BADGE_GAP = 12;
+// Badge sizing — wide enough for full "Longevity Champion" text
+const BADGE_WIDTH = 180;
+const BADGE_GAP = 16;
 const ITEM_WIDTH = BADGE_WIDTH + BADGE_GAP;
 
 interface TierBadgeRevealProps {
@@ -27,10 +28,8 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
   const animRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-
   const wheelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Touch/drag state
   const dragState = useRef({
     dragging: false,
     startX: 0,
@@ -90,7 +89,6 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
     function animate(now: number) {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease-out cubic for satisfying deceleration
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = start + distance * eased;
       setOffset(current);
@@ -105,7 +103,7 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
     animRef.current = requestAnimationFrame(animate);
   }, [offset, getTargetOffset]);
 
-  // Touch handlers
+  // Pointer/touch handlers
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     if (phase !== 'interactive') return;
     if (animRef.current) cancelAnimationFrame(animRef.current);
@@ -129,7 +127,6 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
     const dx = ds.startX - e.clientX;
     const newOffset = ds.startOffset + dx;
 
-    // Track velocity
     const dt = now - ds.lastTime;
     if (dt > 0) {
       ds.velocity = (ds.lastX - e.clientX) / dt;
@@ -137,7 +134,7 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
     ds.lastX = e.clientX;
     ds.lastTime = now;
 
-    // Clamp with rubber-band effect at edges
+    // Rubber-band at edges
     const minOffset = 0;
     const maxOffset = (TIERS.length - 1) * ITEM_WIDTH;
     let clamped = newOffset;
@@ -155,12 +152,10 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
     const ds = dragState.current;
     if (!ds.dragging) return;
     ds.dragging = false;
-
-    // Snap back to target with a brief delay so it feels natural
     requestAnimationFrame(() => snapBack());
   }, [snapBack]);
 
-  // Wheel scroll support for desktop
+  // Desktop wheel support
   const onWheel = useCallback((e: React.WheelEvent) => {
     if (phase !== 'interactive') return;
     e.preventDefault();
@@ -177,7 +172,6 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
     setOffset(clamped);
     setDisplayOffset(clamped);
 
-    // Debounced snap-back
     if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
     wheelTimerRef.current = setTimeout(() => {
       snapBack();
@@ -192,11 +186,10 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
     );
   }
 
-  // Calculate which badge is currently centered
   const currentCenterIndex = Math.round(displayOffset / ITEM_WIDTH);
 
   return (
-    <div className="w-full max-w-xl mx-auto min-h-[80px]">
+    <div className="w-full max-w-xl mx-auto min-h-[72px]">
       <div
         ref={containerRef}
         className="relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
@@ -209,9 +202,12 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
       >
         <div
           ref={trackRef}
-          className="flex items-center transition-none py-2"
+          className="flex items-center transition-none py-3"
           style={{
-            transform: `translateX(calc(50% - ${BADGE_WIDTH / 2}px - ${displayOffset}px))`,
+            // Center the active badge; extra padding so edge badges never clip
+            paddingLeft: `calc(50% - ${BADGE_WIDTH / 2}px)`,
+            paddingRight: `calc(50% - ${BADGE_WIDTH / 2}px)`,
+            transform: `translateX(-${displayOffset}px)`,
             gap: `${BADGE_GAP}px`,
           }}
         >
@@ -219,8 +215,42 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
             const isCenter = i === currentCenterIndex;
             const isTarget = i === targetIndex;
             const distFromCenter = Math.abs(i - currentCenterIndex);
-            const opacity = isCenter ? 1 : distFromCenter === 1 ? 0.35 : 0.15;
-            const scale = isCenter ? 1.1 : distFromCenter === 1 ? 0.85 : 0.75;
+            const opacity = isCenter ? 1 : distFromCenter === 1 ? 0.3 : 0.12;
+            const scale = isCenter ? 1.05 : distFromCenter === 1 ? 0.88 : 0.78;
+            const metallic = (tier as { metallic?: string }).metallic;
+
+            // Build badge styles
+            const badgeStyle: React.CSSProperties = {
+              borderColor: tier.borderColor,
+              backgroundColor: tier.bg,
+              boxShadow: isCenter && isTarget
+                ? `0 4px 24px ${tier.color}50`
+                : isCenter
+                  ? `0 2px 12px ${tier.color}30`
+                  : 'none',
+            };
+
+            // Metallic text gradient for silver/gold tiers
+            const textStyle: React.CSSProperties = metallic
+              ? {
+                  background: metallic === 'gold'
+                    ? 'linear-gradient(135deg, #B8860B 0%, #FFD700 25%, #DAA520 50%, #FFD700 75%, #B8860B 100%)'
+                    : 'linear-gradient(135deg, #708090 0%, #C0C0C0 25%, #E8E8E8 50%, #C0C0C0 75%, #708090 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }
+              : { color: tier.textColor };
+
+            // Metallic border gradient for silver/gold
+            if (metallic) {
+              badgeStyle.backgroundImage = metallic === 'gold'
+                ? `linear-gradient(${tier.bg}, ${tier.bg}), linear-gradient(135deg, #B8860B, #FFD700, #DAA520, #FFD700, #B8860B)`
+                : `linear-gradient(${tier.bg}, ${tier.bg}), linear-gradient(135deg, #708090, #C0C0C0, #E8E8E8, #C0C0C0, #708090)`;
+              badgeStyle.backgroundOrigin = 'border-box';
+              badgeStyle.backgroundClip = 'padding-box, border-box';
+              badgeStyle.borderColor = 'transparent';
+            }
 
             return (
               <div
@@ -233,30 +263,20 @@ export default function TierBadgeReveal({ tierLabel }: TierBadgeRevealProps) {
                 }}
               >
                 <span
-                  className={`inline-block text-center text-xs sm:text-sm font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border-2 whitespace-nowrap ${tier.bg} ${tier.text} ${tier.border}`}
-                  style={{
-                    boxShadow: isCenter && isTarget ? `0 4px 20px ${tier.color}50` : 'none',
-                  }}
+                  className={`inline-block text-center font-bold rounded-full whitespace-nowrap border-2 border-solid ${
+                    isCenter
+                      ? 'text-sm sm:text-base px-4 sm:px-5 py-2 sm:py-2.5'
+                      : 'text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2'
+                  }`}
+                  style={badgeStyle}
                 >
-                  {tier.label.replace('Longevity ', '')}
+                  <span style={textStyle}>{tier.label}</span>
                 </span>
               </div>
             );
           })}
         </div>
       </div>
-
-      {/* Full tier label below */}
-      {phase === 'interactive' && (
-        <div className="text-center mt-2 animate-fade-in-up">
-          <span
-            className={`inline-block text-base sm:text-lg font-bold px-5 sm:px-6 py-2 rounded-full border-2 ${TIERS[targetIndex].bg} ${TIERS[targetIndex].text} ${TIERS[targetIndex].border}`}
-            style={{ boxShadow: `0 4px 20px ${TIERS[targetIndex].color}40` }}
-          >
-            {tierLabel}
-          </span>
-        </div>
-      )}
     </div>
   );
 }
