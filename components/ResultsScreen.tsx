@@ -63,7 +63,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
       <div className="pt-4 pb-3 flex justify-center">
         <a href="/">
           <img
-            src="/longeviquest-logo-1600.png"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/longeviquest-logo-1600.png`}
             alt="LongeviQuest"
             className="h-8 sm:h-10"
           />

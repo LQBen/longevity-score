@@ -23,7 +23,7 @@ export default function EmailCapture({ onSubmit, onSkip }: EmailCaptureProps) {
     setSubmitting(true);
     setError('');
     try {
-      const res = await fetch('/api/subscribe', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/api/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

@@ -80,7 +80,7 @@ export default function QuizPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     try {
-      const res = await fetch('/api/score', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/api/score`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers }),
@@ -129,7 +129,7 @@ export default function QuizPage() {
         <div className="pt-4 pb-3 flex justify-center">
           <a href="/">
             <img
-              src="/longeviquest-logo-1600.png"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/longeviquest-logo-1600.png`}
               alt="LongeviQuest"
               className="h-8 sm:h-10"
             />
