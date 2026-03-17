@@ -148,7 +148,7 @@ export const tiers: TierDef[] = [
   {
     min: 90, max: 100,
     label: 'Longevity Champion',
-    message: "Congratulations! You are a Longevity Champion. Your lifestyle is strongly aligned with the habits of the world's longest-lived people. Your choices and habits are preparing you for a long, healthy life. For you, the biggest challenge may be maintaining this momentum. See which factors boosted your score and which ones — if any — are holding you back. Want to see how your friends or family would score? Share the quiz!",
+    message: "Congratulations! You are a Longevity Champion. Your lifestyle is strongly aligned with the habits of the world's longest-lived people. Your choices and habits are preparing you for a long, healthy life. For you, the biggest challenge may be maintaining this momentum. See which factors boosted your score and which ones — if any — are holding you back.",
   },
   {
     min: 80, max: 89,
