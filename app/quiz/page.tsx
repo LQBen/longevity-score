@@ -49,8 +49,8 @@ export default function QuizPage() {
 
     trackEvent(Events.QUESTION_ANSWERED, {
       question_number: currentQuestion + 1,
-      question_category: q.category,
-      answer_text: typeof answer === 'number' ? String(answer) : q.options.find(o => o.id === answer)?.text || answer,
+      question_name: q.id,
+      answer: typeof answer === 'number' ? String(answer) : q.options.find(o => o.id === answer)?.text || answer,
     });
 
     // Auto-advance for non-slider questions with smooth transition

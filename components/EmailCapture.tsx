@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { trackEvent, Events } from '@/lib/analytics';
+import { trackEvent, identifyUser, Events } from '@/lib/analytics';
 
 interface EmailCaptureProps {
   onSubmit: () => void;
@@ -26,16 +26,18 @@ export default function EmailCapture({ onSubmit, onSkip }: EmailCaptureProps) {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ email }),
       });
       if (!res.ok) throw new Error('Submission failed');
-      trackEvent(Events.EMAIL_SUBMITTED);
-      onSubmit();
     } catch {
-      setError('Something went wrong. Please try again.');
+      // Don't block quiz flow on MailerLite failure
+      console.error('Email subscription failed');
     } finally {
       setSubmitting(false);
     }
+    identifyUser(email);
+    trackEvent(Events.EMAIL_CAPTURED);
+    onSubmit();
   };
 
   const handleSkip = () => {

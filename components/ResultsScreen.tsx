@@ -39,16 +39,16 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
   useEffect(() => {
     trackEvent(Events.QUIZ_COMPLETED, {
       score_percentage: result.score,
-      tier_label: result.tier.label,
+      tier_name: result.tier.label,
     });
   }, [result.score, result.tier.label]);
 
   const handleTryAgain = () => {
-    trackEvent(Events.TRY_AGAIN_CLICKED);
     onTryAgain();
   };
 
   const handleShare = async () => {
+    trackEvent(Events.SHARE_CLICKED);
     const shareData = {
       title: "What's Your Longevity Score?",
       text: `I scored ${result.score}% on the Longevity Score quiz — ${result.tier.label}! Find out how your lifestyle compares to the world's longest-lived people.`,

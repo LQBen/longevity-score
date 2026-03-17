@@ -41,7 +41,7 @@ export default function FactorCard({ category, classification, message, cta, del
         href={cta.url}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => trackEvent(Events.FACTOR_CTA_CLICKED, { category })}
+        onClick={() => trackEvent(Events.LEARN_MORE_CLICKED, { factor_name: category })}
         className="inline-block text-sm font-medium text-white bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors"
       >
         {cta.text}

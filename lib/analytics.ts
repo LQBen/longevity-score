@@ -1,25 +1,25 @@
 // PostHog analytics helpers
+import posthog from 'posthog-js';
 
-declare global {
-  interface Window {
-    posthog?: {
-      capture: (event: string, properties?: Record<string, unknown>) => void;
-    };
+export function trackEvent(event: string, properties?: Record<string, unknown>) {
+  if (typeof window !== 'undefined') {
+    posthog.capture(event, properties);
   }
 }
 
-export function trackEvent(event: string, properties?: Record<string, unknown>) {
-  if (typeof window !== 'undefined' && window.posthog) {
-    window.posthog.capture(event, properties);
+export function identifyUser(email: string) {
+  if (typeof window !== 'undefined') {
+    posthog.identify(email);
+    posthog.people.set({ email });
   }
 }
 
 export const Events = {
   QUIZ_STARTED: 'quiz_started',
   QUESTION_ANSWERED: 'question_answered',
-  EMAIL_SUBMITTED: 'email_submitted',
+  EMAIL_CAPTURED: 'email_captured',
   EMAIL_SKIPPED: 'email_skipped',
   QUIZ_COMPLETED: 'quiz_completed',
-  TRY_AGAIN_CLICKED: 'try_again_clicked',
-  FACTOR_CTA_CLICKED: 'factor_cta_clicked',
+  SHARE_CLICKED: 'share_clicked',
+  LEARN_MORE_CLICKED: 'learn_more_clicked',
 } as const;
