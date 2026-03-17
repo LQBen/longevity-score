@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -7,13 +6,10 @@ export default function Home() {
       {/* Logo */}
       <div className="pt-6 pb-4 flex justify-center">
         <a href="https://longeviquest.com" target="_blank" rel="noopener noreferrer">
-          <Image
-            src="/longeviquest-logo-1600.png"
+          <img
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/longeviquest-logo-1600.png`}
             alt="LongeviQuest"
-            width={200}
-            height={48}
             className="h-10 sm:h-12 w-auto"
-            priority
           />
         </a>
       </div>

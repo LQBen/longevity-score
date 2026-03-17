@@ -84,7 +84,13 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
               <TierBadgeReveal tierLabel={result.tier.label} />
             </div>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto text-center">
-              {result.tier.message}
+              {result.tier.message.includes('Share the quiz!')
+                ? <>
+                    {result.tier.message.split('Share the quiz!')[0]}
+                    <a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/`} className="text-primary font-semibold hover:underline">Share the quiz!</a>
+                    {result.tier.message.split('Share the quiz!')[1]}
+                  </>
+                : result.tier.message}
             </p>
           </div>
 
