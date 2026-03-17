@@ -1,7 +1,3 @@
-'use client';
-
-import { trackEvent, Events } from '@/lib/analytics';
-
 interface FactorCardProps {
   category: string;
   classification: 'booster' | 'hazard';
@@ -20,7 +16,7 @@ const borderStyles: Record<string, string> = {
   hazard: 'border-l-red-500',
 };
 
-export default function FactorCard({ category, classification, message, cta, delay }: FactorCardProps) {
+export default function FactorCard({ category, classification, message, delay }: FactorCardProps) {
   const badge = badgeConfig[classification];
 
   return (
@@ -34,18 +30,9 @@ export default function FactorCard({ category, classification, message, cta, del
       <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full ${badge.style} mb-3`}>
         {badge.label}
       </span>
-      <p className="text-base text-gray-700 leading-relaxed mb-4">
+      <p className="text-base text-gray-700 leading-relaxed">
         {message}
       </p>
-      <a
-        href={cta.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => trackEvent(Events.LEARN_MORE_CLICKED, { factor_name: category })}
-        className="inline-block text-sm font-medium text-white bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors"
-      >
-        {cta.text}
-      </a>
     </div>
   );
 }

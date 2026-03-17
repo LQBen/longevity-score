@@ -138,8 +138,15 @@ export default function Home() {
         <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground text-center mb-3">
           What&apos;s Your Longevity Score?
         </h1>
-        <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+        <p className="text-lg text-gray-600 text-center max-w-md mb-2">
           Discover how your lifestyle compares to the world&apos;s longest-lived people.
+        </p>
+        <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+          Brought to you by{' '}
+          <a href="https://longeviquest.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
+            LongeviQuest
+          </a>
+          , the world&apos;s leading authority on maximum human longevity.
         </p>
 
         <Link
@@ -148,6 +155,14 @@ export default function Home() {
         >
           START
         </Link>
+        <a
+          href="https://longeviquest.com/longevity-score-explained/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 text-sm text-gray-400 hover:text-gray-600 hover:underline transition-colors"
+        >
+          How is this scored?
+        </a>
       </main>
 
       {/* Footer */}

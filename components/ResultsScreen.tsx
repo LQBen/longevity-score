@@ -47,24 +47,6 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
     onTryAgain();
   };
 
-  const handleShare = async () => {
-    trackEvent(Events.SHARE_CLICKED);
-    const shareData = {
-      title: "What's Your Longevity Score?",
-      text: `I scored ${result.score}% on the Longevity Score quiz — ${result.tier.label}! Find out how your lifestyle compares to the world's longest-lived people.`,
-      url: window.location.origin,
-    };
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch {
-        // User cancelled sharing
-      }
-    } else {
-      await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-      alert('Link copied to clipboard!');
-    }
-  };
 
   // Factors are pre-sorted by classification then maxPoints from the server
   // Desktop: boosters on left, hazards on right
@@ -115,13 +97,14 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
             >
               Try Again
             </button>
-            <button
-              type="button"
-              onClick={handleShare}
-              className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors min-h-[48px]"
+            <a
+              href="https://longeviquest.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 border-2 border-gray-300 text-gray-600 font-semibold rounded-xl hover:bg-gray-100 transition-colors min-h-[48px] inline-flex items-center justify-center"
             >
-              Share
-            </button>
+              Visit LongeviQuest
+            </a>
           </div>
         </div>
       </div>
@@ -241,22 +224,24 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
         </div>
 
         {/* Bottom section */}
-        <div className="mt-12 text-center space-y-4">
-          <button
-            type="button"
-            onClick={handleTryAgain}
-            className="px-8 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary/10 transition-colors min-h-[48px]"
-          >
-            Try Again
-          </button>
-          <a
-            href="https://longeviquest.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-sm text-primary hover:underline"
-          >
-            longeviquest.com
-          </a>
+        <div className="mt-12 flex flex-col items-center gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={handleTryAgain}
+              className="px-8 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary/10 transition-colors min-h-[48px]"
+            >
+              Try Again
+            </button>
+            <a
+              href="https://longeviquest.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3 border-2 border-gray-300 text-gray-600 font-semibold rounded-xl hover:bg-gray-100 transition-colors min-h-[48px] inline-flex items-center justify-center"
+            >
+              Visit LongeviQuest
+            </a>
+          </div>
         </div>
 
       </div>
