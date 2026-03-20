@@ -18,7 +18,6 @@ export const Events = {
   QUIZ_STARTED: 'quiz_started',
   QUESTION_ANSWERED: 'question_answered',
   EMAIL_CAPTURED: 'email_captured',
-  EMAIL_SKIPPED: 'email_skipped',
   QUIZ_COMPLETED: 'quiz_completed',
   SHARE_CLICKED: 'share_clicked',
   LEARN_MORE_CLICKED: 'learn_more_clicked',

@@ -1,7 +1,7 @@
 'use client';
 
 import { Question } from '@/lib/questions';
-import AgeSlider from './AgeSlider';
+import AgeInput from './AgeInput';
 import Tooltip from './Tooltip';
 
 interface QuizQuestionProps {
@@ -57,8 +57,8 @@ export default function QuizQuestion({
         {/* Answer options */}
         {question.type === 'slider' ? (
           <div className="mt-8 mb-4">
-            <AgeSlider
-              value={typeof selectedAnswer === 'number' ? selectedAnswer : 61}
+            <AgeInput
+              value={typeof selectedAnswer === 'number' ? selectedAnswer : undefined}
               onChange={(val) => onAnswer(val)}
             />
           </div>

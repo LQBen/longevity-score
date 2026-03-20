@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ScoreBar from './ScoreBar';
 import FactorCard from './FactorCard';
 import TierBadgeReveal from './TierBadgeReveal';
-import { trackEvent, Events } from '@/lib/analytics';
+import { trackEvent, identifyUser, Events } from '@/lib/analytics';
 
 interface Factor {
   category: string;
@@ -36,6 +36,11 @@ interface ResultsScreenProps {
 
 
 export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps) {
+  const [email, setEmail] = useState('');
+  const [emailSubmitting, setEmailSubmitting] = useState(false);
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [emailError, setEmailError] = useState('');
+
   useEffect(() => {
     trackEvent(Events.QUIZ_COMPLETED, {
       score_percentage: result.score,
@@ -47,6 +52,43 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
     onTryAgain();
   };
 
+  const boosterNames = result.factors
+    .filter(f => f.classification === 'booster')
+    .map(f => f.category);
+  const hazardNames = result.factors
+    .filter(f => f.classification === 'hazard')
+    .map(f => f.category);
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      setEmailError('Please enter your email');
+      return;
+    }
+    setEmailSubmitting(true);
+    setEmailError('');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/api/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          longevity_score: result.score,
+          longevity_tier: result.tier.label,
+          top_boosters: boosterNames.join(', '),
+          top_hazards: hazardNames.join(', '),
+        }),
+      });
+      if (!res.ok) throw new Error('Submission failed');
+    } catch {
+      console.error('Email subscription failed');
+    } finally {
+      setEmailSubmitting(false);
+    }
+    identifyUser(email);
+    trackEvent(Events.EMAIL_CAPTURED);
+    setEmailSubmitted(true);
+  };
 
   // Factors are pre-sorted by classification then maxPoints from the server
   // Desktop: boosters on left, hazards on right
@@ -106,6 +148,46 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
               Visit LongeviQuest
             </a>
           </div>
+        </div>
+
+        {/* Email capture card */}
+        <div className="max-w-xl mx-auto mt-10">
+          {emailSubmitted ? (
+            <div className="bg-white rounded-2xl shadow-md p-6 text-center">
+              <p className="text-lg font-semibold text-primary">Results sent! Check your inbox.</p>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-primary text-center mb-1">
+                Send me my results
+              </h3>
+              <p className="text-center text-gray-500 text-sm sm:text-base mb-5">
+                Get your score, tier, and personalized factors delivered to your inbox
+              </p>
+              <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                  </span>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setEmailError(''); }}
+                    placeholder="your@email.com"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl text-base focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={emailSubmitting}
+                  className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors min-h-[48px] disabled:opacity-50 whitespace-nowrap"
+                >
+                  {emailSubmitting ? 'Sending...' : 'Send'}
+                </button>
+              </form>
+              {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
+            </div>
+          )}
         </div>
       </div>
 

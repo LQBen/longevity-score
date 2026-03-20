@@ -41,7 +41,6 @@ export default function EmailCapture({ onSubmit, onSkip }: EmailCaptureProps) {
   };
 
   const handleSkip = () => {
-    trackEvent(Events.EMAIL_SKIPPED);
     onSkip();
   };
 

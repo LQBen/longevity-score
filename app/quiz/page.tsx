@@ -5,11 +5,10 @@ import { questions } from '@/lib/questions';
 import { trackEvent, Events } from '@/lib/analytics';
 import ProgressBar from '@/components/ProgressBar';
 import QuizQuestion from '@/components/QuizQuestion';
-import EmailCapture from '@/components/EmailCapture';
 import ScoreCalculating from '@/components/ScoreCalculating';
 import ResultsScreen, { ScoreResult } from '@/components/ResultsScreen';
 
-type Screen = 'quiz' | 'email' | 'calculating' | 'results';
+type Screen = 'quiz' | 'calculating' | 'results';
 
 export default function QuizPage() {
   const [screen, setScreen] = useState<Screen>('quiz');
@@ -25,23 +24,37 @@ export default function QuizPage() {
 
   const totalQuestions = questions.length;
 
-  // Set default age value when reaching the age slider
-  useEffect(() => {
-    const q = questions[currentQuestion];
-    if (q && q.type === 'slider' && answers[q.id] === undefined) {
-      setAnswers(prev => ({ ...prev, [q.id]: 61 }));
+  // No default age value — user must type their age
+
+  const fetchResults = useCallback(async () => {
+    // Show calculating animation immediately
+    setScreen('calculating');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/api/score`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers }),
+      });
+      const data = await res.json();
+      resultRef.current = data;
+      setResult(data);
+    } catch (err) {
+      console.error('Error fetching score:', err);
+      alert('Something went wrong calculating your score. Please try again.');
+      setScreen('quiz');
     }
-  }, [currentQuestion, answers]);
+  }, [answers]);
 
   const advanceQuestion = useCallback(() => {
     if (currentQuestion < totalQuestions - 1) {
       setCurrentQuestion(prev => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      setScreen('email');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      fetchResults();
     }
-  }, [currentQuestion, totalQuestions]);
+  }, [currentQuestion, totalQuestions, fetchResults]);
 
   const handleAnswer = (answer: string | number) => {
     const q = questions[currentQuestion];
@@ -74,41 +87,12 @@ export default function QuizPage() {
     }
   };
 
-  const fetchResults = async () => {
-    // Show calculating animation immediately
-    setScreen('calculating');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/api/score`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers }),
-      });
-      const data = await res.json();
-      resultRef.current = data;
-      setResult(data);
-    } catch (err) {
-      console.error('Error fetching score:', err);
-      alert('Something went wrong calculating your score. Please try again.');
-      setScreen('email');
-    }
-  };
-
   const handleCalculatingComplete = useCallback(() => {
     if (resultRef.current) {
       setScreen('results');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, []);
-
-  const handleEmailSubmit = () => {
-    fetchResults();
-  };
-
-  const handleEmailSkip = () => {
-    fetchResults();
-  };
 
   const handleTryAgain = () => {
     setScreen('quiz');
@@ -161,13 +145,6 @@ export default function QuizPage() {
               isFirst={currentQuestion === 0}
             />
           </div>
-        )}
-
-        {screen === 'email' && (
-          <EmailCapture
-            onSubmit={handleEmailSubmit}
-            onSkip={handleEmailSkip}
-          />
         )}
 
         {screen === 'calculating' && (
