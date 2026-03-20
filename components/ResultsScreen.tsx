@@ -130,64 +130,40 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
             </p>
           </div>
 
-          {/* Action buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-            <button
-              type="button"
-              onClick={handleTryAgain}
-              className="px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary/10 transition-colors min-h-[48px]"
-            >
-              Try Again
-            </button>
-            <a
-              href="https://longeviquest.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 border-2 border-gray-300 text-gray-600 font-semibold rounded-xl hover:bg-gray-100 transition-colors min-h-[48px] inline-flex items-center justify-center"
-            >
-              Visit LongeviQuest
-            </a>
-          </div>
-        </div>
-
-        {/* Email capture card */}
-        <div className="max-w-xl mx-auto mt-10">
-          {emailSubmitted ? (
-            <div className="bg-white rounded-2xl shadow-md p-6 text-center">
-              <p className="text-lg font-semibold text-primary">Results sent! Check your inbox.</p>
-            </div>
-          ) : (
-            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
-              <h3 className="text-lg sm:text-xl font-semibold text-primary text-center mb-1">
-                Send me my results
-              </h3>
-              <p className="text-center text-gray-500 text-sm sm:text-base mb-5">
-                Get your score, tier, and personalized factors delivered to your inbox
-              </p>
-              <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  </span>
+          {/* Action row: Try Again + inline email capture */}
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-xl justify-center">
+              <button
+                type="button"
+                onClick={handleTryAgain}
+                className="px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary/10 transition-colors min-h-[48px] whitespace-nowrap"
+              >
+                Try Again
+              </button>
+              {emailSubmitted ? (
+                <span className="text-sm font-medium text-primary">Results sent!</span>
+              ) : (
+                <form onSubmit={handleEmailSubmit} className="flex items-center gap-2 flex-1 min-w-0">
+                  <span className="text-sm text-gray-500 whitespace-nowrap hidden sm:inline">Send me my results</span>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => { setEmail(e.target.value); setEmailError(''); }}
                     placeholder="your@email.com"
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl text-base focus:outline-none focus:border-primary"
+                    className="min-w-0 flex-1 px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary"
                   />
-                </div>
-                <button
-                  type="submit"
-                  disabled={emailSubmitting}
-                  className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors min-h-[48px] disabled:opacity-50 whitespace-nowrap"
-                >
-                  {emailSubmitting ? 'Sending...' : 'Send'}
-                </button>
-              </form>
-              {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
+                  <button
+                    type="submit"
+                    disabled={emailSubmitting}
+                    className="px-4 py-2.5 bg-primary text-white font-semibold text-sm rounded-xl hover:bg-primary-dark transition-colors disabled:opacity-50 whitespace-nowrap"
+                  >
+                    {emailSubmitting ? '...' : 'Send'}
+                  </button>
+                </form>
+              )}
             </div>
-          )}
+            {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+          </div>
         </div>
       </div>
 
@@ -306,24 +282,14 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
         </div>
 
         {/* Bottom section */}
-        <div className="mt-12 flex flex-col items-center gap-3">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              type="button"
-              onClick={handleTryAgain}
-              className="px-8 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary/10 transition-colors min-h-[48px]"
-            >
-              Try Again
-            </button>
-            <a
-              href="https://longeviquest.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 border-2 border-gray-300 text-gray-600 font-semibold rounded-xl hover:bg-gray-100 transition-colors min-h-[48px] inline-flex items-center justify-center"
-            >
-              Visit LongeviQuest
-            </a>
-          </div>
+        <div className="mt-12 flex justify-center">
+          <button
+            type="button"
+            onClick={handleTryAgain}
+            className="px-8 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary/10 transition-colors min-h-[48px]"
+          >
+            Try Again
+          </button>
         </div>
 
       </div>

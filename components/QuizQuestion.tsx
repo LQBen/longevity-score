@@ -10,6 +10,7 @@ interface QuizQuestionProps {
   totalQuestions: number;
   selectedAnswer: string | number | undefined;
   onAnswer: (answer: string | number) => void;
+  onClearAnswer: () => void;
   onNext: () => void;
   onPrevious: () => void;
   isFirst: boolean;
@@ -32,6 +33,7 @@ export default function QuizQuestion({
   question,
   selectedAnswer,
   onAnswer,
+  onClearAnswer,
   onNext,
   onPrevious,
   isFirst,
@@ -60,6 +62,7 @@ export default function QuizQuestion({
             <AgeInput
               value={typeof selectedAnswer === 'number' ? selectedAnswer : undefined}
               onChange={(val) => onAnswer(val)}
+              onClear={onClearAnswer}
             />
           </div>
         ) : (

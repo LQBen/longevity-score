@@ -87,6 +87,15 @@ export default function QuizPage() {
     }
   };
 
+  const handleClearAnswer = () => {
+    const q = questions[currentQuestion];
+    setAnswers(prev => {
+      const next = { ...prev };
+      delete next[q.id];
+      return next;
+    });
+  };
+
   const handleCalculatingComplete = useCallback(() => {
     if (resultRef.current) {
       setScreen('results');
@@ -140,6 +149,7 @@ export default function QuizPage() {
               totalQuestions={totalQuestions}
               selectedAnswer={answers[questions[currentQuestion].id]}
               onAnswer={handleAnswer}
+              onClearAnswer={handleClearAnswer}
               onNext={handleNext}
               onPrevious={handlePrevious}
               isFirst={currentQuestion === 0}
