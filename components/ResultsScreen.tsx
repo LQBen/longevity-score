@@ -40,6 +40,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [showEmailForm, setShowEmailForm] = useState(false);
 
   useEffect(() => {
     trackEvent(Events.QUIZ_COMPLETED, {
@@ -88,6 +89,7 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
     identifyUser(email);
     trackEvent(Events.EMAIL_CAPTURED);
     setEmailSubmitted(true);
+    setShowEmailForm(false);
   };
 
   // Factors are pre-sorted by classification then maxPoints from the server
@@ -130,9 +132,9 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
             </p>
           </div>
 
-          {/* Action row: Try Again + inline email capture */}
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-xl justify-center">
+          {/* Action buttons */}
+          <div className="mt-8 flex flex-col items-center gap-3">
+            <div className="flex flex-row justify-center gap-3">
               <button
                 type="button"
                 onClick={handleTryAgain}
@@ -141,28 +143,53 @@ export default function ResultsScreen({ result, onTryAgain }: ResultsScreenProps
                 Try Again
               </button>
               {emailSubmitted ? (
-                <span className="text-sm font-medium text-primary">Results sent!</span>
+                <button
+                  type="button"
+                  disabled
+                  className="px-6 py-3 border-2 border-gray-300 text-gray-400 font-semibold rounded-xl min-h-[48px] whitespace-nowrap cursor-default"
+                >
+                  Results Sent!
+                </button>
               ) : (
-                <form onSubmit={handleEmailSubmit} className="flex items-center gap-2 flex-1 min-w-0">
-                  <span className="text-sm text-gray-500 whitespace-nowrap hidden sm:inline">Send me my results</span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value); setEmailError(''); }}
-                    placeholder="your@email.com"
-                    className="min-w-0 flex-1 px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary"
-                  />
-                  <button
-                    type="submit"
-                    disabled={emailSubmitting}
-                    className="px-4 py-2.5 bg-primary text-white font-semibold text-sm rounded-xl hover:bg-primary-dark transition-colors disabled:opacity-50 whitespace-nowrap"
-                  >
-                    {emailSubmitting ? '...' : 'Send'}
-                  </button>
-                </form>
+                <button
+                  type="button"
+                  onClick={() => setShowEmailForm(prev => !prev)}
+                  className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors min-h-[48px] whitespace-nowrap"
+                >
+                  Send My Results
+                </button>
               )}
             </div>
-            {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+
+            {/* Expandable email card */}
+            <div
+              className={`grid transition-all duration-300 ease-in-out ${showEmailForm ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+            >
+              <div className="overflow-hidden">
+                <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-6 w-full max-w-md mx-auto mt-2">
+                  <p className="text-sm text-gray-500 text-center mb-3">
+                    Get your score, tier, and personalized factors delivered to your inbox
+                  </p>
+                  <form onSubmit={handleEmailSubmit} className="flex gap-2">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); setEmailError(''); }}
+                      placeholder="your@email.com"
+                      className="min-w-0 flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl text-base focus:outline-none focus:border-primary"
+                    />
+                    <button
+                      type="submit"
+                      disabled={emailSubmitting}
+                      className="px-5 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors disabled:opacity-50 whitespace-nowrap"
+                    >
+                      {emailSubmitting ? '...' : 'Submit'}
+                    </button>
+                  </form>
+                  {emailError && <p className="text-red-500 text-sm mt-2 text-center">{emailError}</p>}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
