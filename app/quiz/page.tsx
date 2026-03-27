@@ -17,6 +17,8 @@ export default function QuizPage() {
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [transitioning, setTransitioning] = useState(false);
   const resultRef = useRef<ScoreResult | null>(null);
+  const answersRef = useRef(answers);
+  answersRef.current = answers;
 
   useEffect(() => {
     trackEvent(Events.QUIZ_STARTED);
@@ -35,7 +37,7 @@ export default function QuizPage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/api/score`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers }),
+        body: JSON.stringify({ answers: answersRef.current }),
       });
       const data = await res.json();
       resultRef.current = data;
@@ -45,7 +47,7 @@ export default function QuizPage() {
       alert('Something went wrong calculating your score. Please try again.');
       setScreen('quiz');
     }
-  }, [answers]);
+  }, []);
 
   const advanceQuestion = useCallback(() => {
     if (currentQuestion < totalQuestions - 1) {
