@@ -1,6 +1,15 @@
-import Link from "next/link";
+'use client';
+
+import { useState } from 'react';
+import QuizPage from './quiz/page';
 
 export default function Home() {
+  const [view, setView] = useState<'welcome' | 'quiz'>('welcome');
+
+  if (view === 'quiz') {
+    return <QuizPage />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-card-bg">
       {/* Logo */}
@@ -145,12 +154,12 @@ export default function Home() {
           , the world&apos;s leading authority on maximum human longevity.
         </p>
 
-        <Link
-          href="/quiz"
+        <button
+          onClick={() => setView('quiz')}
           className="inline-flex items-center justify-center px-12 py-4 bg-primary text-white text-xl font-bold rounded-xl hover:bg-primary-dark transition-colors min-h-[56px] shadow-lg hover:shadow-xl"
         >
           START
-        </Link>
+        </button>
         <a
           href="https://longeviquest.com/longevity-score-explained/"
           target="_blank"
